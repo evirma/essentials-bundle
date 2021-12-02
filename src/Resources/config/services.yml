@@ -12,62 +12,62 @@ services:
       string $storageDir: "%storage_directory%"
       string $env: '%kernel.environment%'
 
-  Evirma\Bundle\EssentialsBundle\Service\:
-    resource: '../../Service/**/*.php'
-    exclude:
-      - '../../Service/{Abstract}Service.php'
-    public: true
+#  Evirma\Bundle\EssentialsBundle\Service\:
+#    resource: '../../Service/**/*.php'
+#    exclude:
+#      - '../../Service/{Abstract}Service.php'
+#    public: true
 
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension
-    tags:
-      - { name: twig.extension }
-
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension
-    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\RequestService' ]
-    tags:
-      - { name: twig.extension }
-
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension
-    tags:
-      - { name: twig.extension }
-
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension
-    tags:
-      - { name: twig.extension }
-
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\IconExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\IconExtension
-    tags:
-      - { name: twig.extension }
-
-  Evirma\Bundle\EssentialsBundle\Twig\Extension\PageMetaExtension:
-    class:     Evirma\Bundle\EssentialsBundle\Twig\Extension\PageMetaExtension
-    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\PageMeta']
-    tags:
-      - { name: twig.extension }
-    public: true
-
-  Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension:
-    class:     Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension
-    arguments: [ '@router', '@request_stack']
-    tags:
-      - { name: twig.extension }
-    public: true
-
-  Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension:
-    class: Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
-
-  Evirma\Bundle\EssentialsBundle\Form\Bootstrap\Extension\ButtonTypeExtension:
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
-
-  Evirma\Bundle\EssentialsBundle\Form\Bootstrap\Extension\InputGroupButtonExtension:
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension
+#    tags:
+#      - { name: twig.extension }
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension
+#    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\RequestService' ]
+#    tags:
+#      - { name: twig.extension }
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension
+#    tags:
+#      - { name: twig.extension }
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension
+#    tags:
+#      - { name: twig.extension }
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\IconExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\IconExtension
+#    tags:
+#      - { name: twig.extension }
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\Extension\PageMetaExtension:
+#    class:     Evirma\Bundle\EssentialsBundle\Twig\Extension\PageMetaExtension
+#    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\PageMeta']
+#    tags:
+#      - { name: twig.extension }
+#    public: true
+#
+#  Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension:
+#    class:     Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension
+#    arguments: [ '@router', '@request_stack']
+#    tags:
+#      - { name: twig.extension }
+#    public: true
+#
+#  Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension:
+#    class: Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension
+#    tags:
+#      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+#
+#  Evirma\Bundle\EssentialsBundle\Form\Bootstrap\Extension\ButtonTypeExtension:
+#    tags:
+#      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
+#
+#  Evirma\Bundle\EssentialsBundle\Form\Bootstrap\Extension\InputGroupButtonExtension:
+#    tags:
+#      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
 
