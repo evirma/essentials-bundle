@@ -73,4 +73,14 @@ class DateUtil
             throw new InvalidArgumentException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
+
+    public static function now(DateTimeZone $timezone=null): DateTimeImmutable
+    {
+        try {
+            return new DateTimeImmutable('now', $timezone);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException($e->getMessage(), (int)$e->getCode(), $e);
+        }
+    }
+
 }
