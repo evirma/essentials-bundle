@@ -33,7 +33,7 @@ trait CommandTrait
     protected function logMemoryUsage(): void
     {
         if (method_exists($this, 'getLogger')) {
-            $this->getLogger()->info('<info>MEMORY USAGE:</info> <fg=white;options=bold>'.$this->getMemoryUsage().'</>');
+            $this->getLogger()->info(/** @lang text */ '<info>MEMORY USAGE:</info> <fg=white;options=bold>'.$this->getMemoryUsage().'</>');
         }
     }
 
