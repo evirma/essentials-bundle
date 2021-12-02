@@ -9,8 +9,8 @@ services:
     public: false
 
     bind:
-      string $storageDir: "%storage_directory%"
-      string $env: '%kernel.environment%'
+      $storageDir: "%storage_directory%"
+      $env: '%kernel.environment%'
 
   Evirma\Bundle\EssentialsBundle\Service\:
     resource: '../../Service/**/*.php'
