@@ -21,7 +21,7 @@ final class DbService
 {
     use CacheTrait;
 
-    private string $connectionName;
+    private ?string $connectionName;
     private ManagerRegistry $manager;
     private ?LoggerInterface $logger;
     private ?Connection $db = null;
@@ -29,7 +29,7 @@ final class DbService
     /** @var array<DbService> */
     private array $servers = [];
 
-    public function __construct(ManagerRegistry $manager, ?LoggerInterface $logger = null, string $connectionName = '')
+    public function __construct(ManagerRegistry $manager, ?LoggerInterface $logger = null, ?string $connectionName = null)
     {
         $this->logger = $logger;
         $this->connectionName = $connectionName;
@@ -85,7 +85,7 @@ final class DbService
         return $this->db;
     }
 
-    public function getConnection(string $name = ''): Connection
+    public function getConnection(?string $name = null): Connection
     {
         $connection = $this->manager->getConnection($name);
 
