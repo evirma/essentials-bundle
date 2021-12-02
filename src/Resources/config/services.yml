@@ -1,6 +1,6 @@
-#parameters:
-#  storage_directory: "%kernel.project_dir%/var/storage"
-#  public_directory: "%kernel.project_dir%/public"
+parameters:
+  storage_directory: "%kernel.project_dir%/var/storage"
+  public_directory: "%kernel.project_dir%/public"
 
 services:
   _defaults:
