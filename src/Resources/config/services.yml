@@ -1,6 +1,6 @@
-parameters:
-  storage_directory: "%kernel.project_dir%/var/storage"
-  public_directory: "%kernel.project_dir%/public"
+#parameters:
+#  storage_directory: "%kernel.project_dir%/var/storage"
+#  public_directory: "%kernel.project_dir%/public"
 
 services:
   _defaults:
@@ -8,9 +8,9 @@ services:
     autoconfigure: true
     public: false
 
-    bind:
-      $storageDir: "%storage_directory%"
-      $env: '%kernel.environment%'
+#    bind:
+#      $storageDir: "%storage_directory%"
+#      $env: '%kernel.environment%'
 
   Evirma\Bundle\EssentialsBundle\Service\:
     resource: '../../Service/**/*.php'
