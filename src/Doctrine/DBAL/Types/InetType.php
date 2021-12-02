@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Evirma\Bundle\CoreBundle\Doctrine\DBAL\Types;
+namespace Evirma\Bundle\EssentialsBundle\Doctrine\DBAL\Types;
 
 use InvalidArgumentException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
