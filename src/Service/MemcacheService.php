@@ -22,8 +22,8 @@ class MemcacheService
     public static bool $isCacheAllowed = true;
     private bool $transaction = false;
     private array $transactionCachedIds = [];
-    private Memcached $memcached;
-    private string $prefix;
+    private ?Memcached $memcached = null;
+    private string $prefix = '';
     private LoggerInterface $logger;
     public static array $profiler = [];
 
