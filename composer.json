@@ -1,0 +1,51 @@
+{
+    "name": "evirma/core-essentials",
+    "type": "symfony-bundle",
+    "description": "Evirma EssentialsBundle",
+    "keywords": [],
+    "homepage": "https://meniam.ru",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eugene Myazin",
+            "email": "meniam@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-xml": "*",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-memcached": "*",
+        "ext-zlib": "*",
+        "ext-json": "*",
+        "ext-dom": "*",
+        "ext-pdo": "*",
+        "ext-gd": "*",
+        "ext-libxml": "*",
+        "ext-iconv": "*",
+        "cocur/slugify": "^4.0",
+        "antoligy/dom-string-iterators": "^1.0",
+        "evirma/autotext-bundle": "^1.0",
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "symfony/http-kernel": "^5.4",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/yaml": "^5.4"
+    },
+    "require-dev": {
+        "symfony/debug-pack": "^1.0"
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": { "Evirma\\Bundle\\EssentialsBundle\\": "src/" }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.4.*"
+        }
+    }
+}
