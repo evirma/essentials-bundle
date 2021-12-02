@@ -200,7 +200,7 @@ final class DbService
      * @param string $sql    SQL query
      * @param array  $params Query parameters
      * @param array  $types  Parameter types
-     * @return array
+     * @return list<array<string,mixed>>
      * @throws SqlDriverException
      */
     public function fetchAllAssociative(string $sql, array $params = [], array $types = []): array
