@@ -12,11 +12,11 @@ services:
       string $storageDir: "%storage_directory%"
       string $env: '%kernel.environment%'
 
-#  Evirma\Bundle\EssentialsBundle\Service\:
-#    resource: '../../Service/**/*.php'
-#    exclude:
-#      - '../../Service/{Abstract}Service.php'
-#    public: true
+  Evirma\Bundle\EssentialsBundle\Service\:
+    resource: '../../Service/**/*.php'
+    exclude:
+      - '../../Service/{Abstract}Service.php'
+    public: true
 
 #  Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
 #    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension
