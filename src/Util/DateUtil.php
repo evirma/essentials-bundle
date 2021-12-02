@@ -6,7 +6,7 @@ namespace Evirma\Bundle\EssentialsBundle\Util;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use Evirma\Bundle\EssentialsBundle\Locale\Locale;
+use Evirma\Bundle\EssentialsBundle\i18n\Locale;
 use Exception;
 use InvalidArgumentException;
 
@@ -25,7 +25,7 @@ class DateUtil
             'July' => 'Июля',
             'August' => 'Августа',
             'September' => 'Сентября',
-            'October' => 'Остября',
+            'October' => 'Октября',
             'November' => 'Ноября',
             'December' => 'Декабря',
             'Jan' => 'Янв',

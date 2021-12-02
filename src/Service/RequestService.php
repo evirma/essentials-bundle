@@ -23,7 +23,7 @@ class RequestService
     /**
      * Ключи принимаются и в формате filter[search][query][value], и в формате filter%5Bsearch%5D%5Bquery%5D%5Bvalue%5D
      * Если URL имеет вид <..>/?filter[search][query][value]=iphone&filter[search][rubric][value]=343,
-     * то ключи и значения подставляются некодированными, сохраняя общий стиль записи
+     * то ключи и значения подставляются не кодированными, сохраняя общий стиль записи
      * Если URL имеет вид <..>/?filter%5Bsearch%5D%5Bquery%5D%5Bvalue%5D=iphone&filter%5Bsearch%5D%5Brubric%5D%5Bvalue%5D=343,
      * то ключи и значения кодируются посредством urlencode()
      *

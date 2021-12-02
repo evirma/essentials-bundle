@@ -50,7 +50,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
         }
 
         if ($this->option('show_digit_pages')) {
-            $navLabel = ($this->locale == 'ru') ? 'Постраничная навигаци' : 'Pagination Navigation';
+            $navLabel = ($this->locale == 'ru') ? 'Постраничная навигация' : 'Pagination Navigation';
             $result .= '<nav class="pager__nav"><ul class="pager__pages" aria-label="'. $navLabel . '">';
             $result .= $this->first();
 

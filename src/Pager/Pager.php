@@ -7,7 +7,6 @@ namespace Evirma\Bundle\EssentialsBundle\Pager;
 use Evirma\Bundle\EssentialsBundle\Pager\Adapter\PagerAdapterInterface;
 use ArrayIterator;
 use Countable;
-use Exception;
 use Iterator;
 use IteratorAggregate;
 use JetBrains\PhpStorm\Pure;

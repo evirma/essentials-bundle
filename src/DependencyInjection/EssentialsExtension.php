@@ -2,7 +2,7 @@
 
 namespace Evirma\Bundle\EssentialsBundle\DependencyInjection;
 
-use \Exception;
+use Exception;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

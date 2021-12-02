@@ -9,10 +9,11 @@ class SwitchNode extends Node
 {
     /**
      * TwigNodeSwitch constructor.
-     * @param Node $value
-     * @param Node $cases
-     * @param Node|null $default
-     * @param int $lineno
+     *
+     * @param Node        $value
+     * @param Node        $cases
+     * @param Node|null   $default
+     * @param int         $lineno
      * @param string|null $tag
      */
     public function __construct(
@@ -20,7 +21,7 @@ class SwitchNode extends Node
         Node $cases,
         Node $default = null,
         $lineno = 0,
-        $tag = null
+        string $tag = null
     )
     {
         parent::__construct(array('value' => $value, 'cases' => $cases, 'default' => $default), array(), $lineno, $tag);

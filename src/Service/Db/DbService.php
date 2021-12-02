@@ -154,7 +154,7 @@ final class DbService
     }
 
     /**
-     * Executes an, optionally parametrized, SQL query.
+     * Executes an optionally parametrized, SQL query.
      * If the query is parametrized, a prepared statement is used.
      * If an SQLLogger is configured, the execution is logged.
      *
@@ -364,7 +364,7 @@ final class DbService
     }
 
     /**
-     * Executes an, optionally parametrized, SQL query.
+     * Executes an optionally parametrized, SQL query.
      * If the query is parametrized, a prepared statement is used.
      * If an SQLLogger is configured, the execution is logged.
      *

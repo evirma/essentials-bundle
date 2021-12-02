@@ -7,7 +7,7 @@ use Evirma\Bundle\EssentialsBundle\Pager\Pager;
 interface PagerTemplateInterface
 {
     /**
-     * The route generator can be any callable to generate the routes receiving the page number as first and unique argument.
+     * The route generator can be any callable to generate the routes receiving the page number than first and unique argument.
      *
      * @param Pager    $pager
      * @param callable $routeGenerator

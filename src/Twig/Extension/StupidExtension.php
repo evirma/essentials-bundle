@@ -286,14 +286,7 @@ class StupidExtension extends AbstractExtension
         return $result;
     }
 
-    /**
-     * Wrapper for array_intersect() method
-     *
-     * @param array $array1
-     * @param array $array2
-     * @return array|ArrayCollection
-     */
-    #[Pure] public function arrayIntersect($array1, $array2): ArrayCollection|array
+    #[Pure] public function arrayIntersect(array $array1, array $array2): ArrayCollection|array
     {
         if ($array1 instanceof ArrayCollection && $array2 instanceof ArrayCollection) {
             return new ArrayCollection(

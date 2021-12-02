@@ -9,7 +9,7 @@ use Twig\TokenParser\AbstractTokenParser;
 
 class NoindexTokenParser extends AbstractTokenParser
 {
-    public function parse(Token $token)
+    public function parse(Token $token): NoindexNode
     {
         $lineno = $token->getLine();
         $parser = $this->parser;
@@ -22,12 +22,12 @@ class NoindexTokenParser extends AbstractTokenParser
         return new NoindexNode($body, $lineno, $this->getTag());
     }
 
-    #[Pure] public function decideMarkdownEnd(Token $token)
+    #[Pure] public function decideMarkdownEnd(Token $token): bool
     {
         return $token->test('endnoindex');
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'noindex';
     }

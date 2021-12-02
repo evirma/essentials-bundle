@@ -9,14 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class RouterRouteGenerator
 {
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * @var array
-     */
+    private UrlGeneratorInterface $router;
     private array $options;
 
     /**
