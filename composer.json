@@ -1,5 +1,5 @@
 {
-    "name": "evirma/core-essentials",
+    "name": "evirma/essentials-bundle",
     "type": "symfony-bundle",
     "description": "Evirma EssentialsBundle",
     "keywords": [],
