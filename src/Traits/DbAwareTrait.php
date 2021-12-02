@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Evirma\Bundle\CoreBundle\Traits;
+namespace Evirma\Bundle\EssentialsBundle\Traits;
 
-use Evirma\Bundle\CoreBundle\Service\Db\DbService;
+use Evirma\Bundle\EssentialsBundle\Service\Db\DbService;
 use Symfony\Contracts\Service\Attribute\Required;
 
 trait DbAwareTrait

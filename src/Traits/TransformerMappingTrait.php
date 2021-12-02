@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Evirma\Bundle\CoreBundle\Traits;
+namespace Evirma\Bundle\EssentialsBundle\Traits;
 
 trait TransformerMappingTrait
 {
