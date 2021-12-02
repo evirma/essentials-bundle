@@ -222,13 +222,14 @@ final class DbService
         return $result;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function fetchObject(string $object, string $statement, array $params = [], array $types = [])
+    public function fetchObject(string $object, string $sql, array $params = [], array $types = [])
     {
-        if ($item = $this->db()->fetchAssociative($statement, $params, $types)) {
-            $item = $this->createObject($object, $item);
+        try {
+            if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
+                $item = $this->createObject($object, $item);
+            }
+        } catch (Exception $e) {
+            throw $this->convertException($e, $sql, $params, $types);
         }
 
         return $item;
