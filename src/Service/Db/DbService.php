@@ -140,14 +140,15 @@ final class DbService
      * @param string $sql    The SQL query.
      * @param array  $params The query parameters.
      * @param array  $types  The query parameter types.
-     * @return array|bool False is returned if no rows are found.
+     * @return array|false False is returned if no rows are found.
      * @throws SqlDriverException
      */
-    public function fetchAssociative(string $sql, array $params = [], array $types = []): bool|array
+    public function fetchAssociative(string $sql, array $params = [], array $types = []): array|false
     {
         $sql = $this->executeQuery($sql, $params, $types);
+
         try {
-            return $sql ? $sql->fetchAssociative() : false;
+            return $sql->fetchAssociative();
         } catch (Exception $e) {
             throw $this->convertException($e, $sql, $params, $types);
         }
@@ -371,14 +372,15 @@ final class DbService
      * @param string $sql    The SQL query to execute.
      * @param array  $params The parameters to bind to the query, if any.
      * @param array  $types  The types the previous parameters are in.
-     * @return array|null The executed statement.
+     * @return array The executed statement.
      * @deprecated use self::fetchAllKeyValue
      */
-    public function fetchPairs(string $sql, array $params = [], array $types = []): ?array
+    public function fetchPairs(string $sql, array $params = [], array $types = []): array
     {
         $sql = $this->executeQuery($sql, $params, $types);
         try {
-            if ($sql && ($data = $sql->fetchAllNumeric())) {
+            $data = $sql->fetchAllNumeric();
+            if ($data) {
                 $result = [];
                 foreach ($data as $item) {
                     $result[$item[0]] = $item[1];
@@ -390,7 +392,7 @@ final class DbService
             throw $this->convertException($e, $sql, $params, $types);
         }
 
-        return null;
+        return [];
     }
 
     public function fetchUniqIds($sql, array $params = [], array $types = []): array
@@ -398,7 +400,8 @@ final class DbService
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
-            if ($stmt && ($data = $stmt->fetchAllNumeric())) {
+            $data = $stmt->fetchAllNumeric();
+            if ($data) {
                 $result = [];
                 foreach ($data as $item) {
                     $result[$item[0]] = $item[0];
