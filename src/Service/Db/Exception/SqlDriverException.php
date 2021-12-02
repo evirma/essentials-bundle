@@ -1,6 +1,8 @@
 <?php
 
-namespace Evirma\Bundle\CoreBundle\Service\Db\Exception;
+declare(strict_types=1);
+
+namespace Evirma\Bundle\EssentialsBundle\Service\Db\Exception;
 
 use Doctrine\DBAL\Driver\Exception as DBALDriverException;
 use RuntimeException;

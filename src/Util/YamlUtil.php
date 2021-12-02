@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Evirma\Bundle\CoreBundle\Util;
+namespace Evirma\Bundle\EssentialsBundle\Util;
 
 use Symfony\Component\Yaml\Yaml as YamlParser;
 

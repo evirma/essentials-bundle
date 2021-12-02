@@ -1,13 +1,15 @@
 <?php
 
-namespace Evirma\Bundle\CoreBundle\Service\Db;
+declare(strict_types=1);
+
+namespace Evirma\Bundle\EssentialsBundle\Service\Db;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
-use Evirma\Bundle\CoreBundle\Service\Db\Exception\SqlDriverException;
+use Evirma\Bundle\EssentialsBundle\Service\Db\Exception\SqlDriverException;
 use Evirma\Bundle\EssentialsBundle\Traits\CacheTrait;
 use PDO;
 use Psr\Log\LoggerInterface;
