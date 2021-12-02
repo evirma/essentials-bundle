@@ -7,6 +7,7 @@ namespace Evirma\Bundle\EssentialsBundle\Service\Db;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Evirma\Bundle\EssentialsBundle\Service\Db\Exception\SqlDriverException;
@@ -138,8 +139,8 @@ final class DbService
      * as an associative array.
      *
      * @param string $sql    The SQL query.
-     * @param array  $params The query parameters.
-     * @param array  $types  The query parameter types.
+     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      * @return array|false False is returned if no rows are found.
      * @throws SqlDriverException
      */
@@ -160,8 +161,8 @@ final class DbService
      * If an SQLLogger is configured, the execution is logged.
      *
      * @param string $sql    SQL query
-     * @param array  $params Query parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      * @return Result
      */
     public function executeQuery(string $sql, array $params = [], array $types = []): Result
@@ -178,8 +179,8 @@ final class DbService
      *
      * @param string $object The Object Class
      * @param string $sql    The SQL query.
-     * @param array  $params The query parameters.
-     * @param array  $types  The query parameter types.
+     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      * @return array
      * @throws SqlDriverException
      */
@@ -198,8 +199,8 @@ final class DbService
      * Prepares and executes an SQL query and returns the result as an array of associative arrays.
      *
      * @param string $sql    SQL query
-     * @param array  $params Query parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      * @return list<array<string,mixed>>
      * @throws SqlDriverException
      */
@@ -223,7 +224,15 @@ final class DbService
         return $result;
     }
 
-    public function fetchObject(string $object, string $sql, array $params = [], array $types = [])
+    /**
+     * @param string $object
+     * @param string $sql
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
+     *
+     * @return object
+     */
+    public function fetchObject(string $object, string $sql, array $params = [], array $types = []): object
     {
         try {
             if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
@@ -241,8 +250,8 @@ final class DbService
      * of the first row of the result.
      *
      * @param string $sql    The SQL query to be executed.
-     * @param array  $params The prepared statement params.
-     * @param array  $types  The query parameter types.
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return mixed False is returned if no rows are found.
      */
     public function fetchOne(string $sql, array $params = [], array $types = []): mixed
@@ -262,8 +271,8 @@ final class DbService
      * Prepares and executes an SQL query and returns the result as an array of the first column values.
      *
      * @param string $sql    SQL query
-     * @param array  $params Query parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array<int,mixed>
      * @throws SqlDriverException
      */
@@ -304,13 +313,13 @@ final class DbService
      * to the first column and the values being an associative array representing the rest of the columns
      * and their values.
      *
-     * @param       $sql
-     * @param array $params Query parameters
-     * @param array $types  Parameter types
+     * @param string $sql
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array
      * @throws SqlDriverException
      */
-    public function fetchAllAssociativeIndexed($sql, array $params = [], array $types = []): array
+    public function fetchAllAssociativeIndexed(string $sql, array $params = [], array $types = []): array
     {
         $stmt = $this->executeQuery($sql, $params, $types);
 
@@ -326,8 +335,8 @@ final class DbService
      * as associative arrays.
      *
      * @param string $query  SQL query
-     * @param array  $params Query parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return Traversable
      * @throws SqlDriverException
      */
@@ -348,8 +357,8 @@ final class DbService
      * and their values.
      *
      * @param string $query  SQL query
-     * @param array  $params Query parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return Traversable
      * @throws SqlDriverException
      */
@@ -370,8 +379,8 @@ final class DbService
      * If an SQLLogger is configured, the execution is logged.
      *
      * @param string $sql    The SQL query to execute.
-     * @param array  $params The parameters to bind to the query, if any.
-     * @param array  $types  The types the previous parameters are in.
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array The executed statement.
      * @deprecated use self::fetchAllKeyValue
      */
@@ -395,7 +404,14 @@ final class DbService
         return [];
     }
 
-    public function fetchUniqIds($sql, array $params = [], array $types = []): array
+    /**
+     * @param string $sql
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
+     *
+     * @return array
+     */
+    public function fetchUniqIds(string $sql, array $params = [], array $types = []): array
     {
         $stmt = $this->executeQuery($sql, $params, $types);
 
@@ -427,8 +443,8 @@ final class DbService
      * This method supports PDO binding types as well as DBAL mapping types.
      *
      * @param string $sql    SQL statement
-     * @param array  $params Statement parameters
-     * @param array  $types  Parameter types
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
      */
@@ -447,7 +463,7 @@ final class DbService
      *
      * @param string $tableExpression The expression of the table to insert data into, quoted or unquoted.
      * @param array  $data            An associative array containing column-value pairs.
-     * @param array  $types           Types of the inserted data.
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
      */
@@ -477,7 +493,7 @@ final class DbService
      * @param string $tableExpression The expression of the table to update quoted or unquoted.
      * @param array  $data            An associative array containing column-value pairs.
      * @param array  $identifier      The update criteria. An associative array containing column-value pairs.
-     * @param array  $types           Types of the merged $data and $identifier arrays in that order.
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
      */
@@ -496,7 +512,7 @@ final class DbService
      *
      * @param string $table    Table name
      * @param array  $criteria Deletion criteria
-     * @param array  $types    Parameter types
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
      */
