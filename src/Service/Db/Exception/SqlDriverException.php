@@ -12,7 +12,7 @@ class SqlDriverException extends RuntimeException
 {
     private Throwable $driverException;
 
-    public function __construct($message, Throwable $exception)
+    public function __construct(string $message, Throwable $exception)
     {
         $this->driverException = $exception;
         parent::__construct($message, $exception->getCode(), $exception);

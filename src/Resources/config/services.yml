@@ -15,7 +15,8 @@ services:
   Evirma\Bundle\EssentialsBundle\Service\:
     resource: '../../Service/**/*.php'
     exclude:
-      - '../../Service/{Abstract}Service.php'
+      - '../../Service/**/Abstract*'
+      - - '../../Service/**/*Exception*'
     public: true
 
   Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
