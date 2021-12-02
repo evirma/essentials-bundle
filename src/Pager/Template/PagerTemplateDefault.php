@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
 
 namespace Evirma\Bundle\EssentialsBundle\Pager\Template;
 
@@ -6,9 +6,6 @@ use Evirma\Bundle\EssentialsBundle\Pager\Pager;
 
 class PagerTemplateDefault extends AbstractPagerTemplate
 {
-    /**
-     * @var Pager
-     */
     protected Pager $pager;
 
     protected array $options = [
@@ -29,7 +26,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
     private int $startPageMobile;
     private int $endPageMobile;
 
-    public function render(Pager $pager, $routeGenerator, array $options = [])
+    public function render(Pager $pager, callable $routeGenerator, array $options = []): string
     {
         if ($pager->getPages() <= 1) {
             return '';
@@ -78,7 +75,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
         return $result;
     }
 
-    public function next($page)
+    public function next($page): string
     {
         if (!$this->option('show_next_page_button')) {
             return '';
@@ -92,20 +89,20 @@ class PagerTemplateDefault extends AbstractPagerTemplate
 
         $nextPageText = ($this->locale == 'ru') ? 'Следующая страница' : 'Show More';
 
-        return "<div class=\"next-page\">{$nextPageButtonPrepend}<a$rel href=\"{$href}\" class=\"pager-next-link btn btn-lg btn-main\">{$nextPageText} &rarr;</a></div>";
+        return "<div class=\"next-page\">$nextPageButtonPrepend<a$rel href=\"$href\" class=\"pager-next-link btn btn-lg btn-main\">$nextPageText &rarr;</a></div>";
     }
 
-    public function separator()
+    public function separator(): string
     {
         return '<li class="pager-dots">…</li>';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'default';
     }
 
-    private function first()
+    private function first(): string
     {
         if ($this->startPage > 1) {
             return $this->page(1);
@@ -114,7 +111,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
         return '';
     }
 
-    private function page($page, $isHidden = false)
+    private function page($page, $isHidden = false): string
     {
         $hiddenClass = $isHidden ? ' hidden-xs' : '';
 
@@ -138,10 +135,10 @@ class PagerTemplateDefault extends AbstractPagerTemplate
         return $result;
     }
 
-    public function current($page)
+    public function current($page): string
     {
         $pageText = $this->locale == 'ru' ? 'Страница №' : 'Page ';
-        $text = "<span class=\"sr-only\">{$pageText}</span>" . trim($page.' '.$this->option('active_suffix'));
+        $text = "<span class=\"sr-only\">$pageText</span>" . trim($page.' '.$this->option('active_suffix'));
         return '<li class="page page-active"><span>'.$text.'</span></li>';
     }
 

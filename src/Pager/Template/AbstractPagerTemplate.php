@@ -13,10 +13,12 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
      * @var array
      */
     protected array $options = [];
+
     /**
      * @var string
      */
-    protected $locale;
+    protected string $locale;
+
     /**
      * @var callable|null
      */
@@ -32,7 +34,7 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
      * @return mixed The option value if it exists
      * @throws InvalidArgumentException if the option does not exist
      */
-    protected function option($name)
+    protected function option(string $name): mixed
     {
         if (!isset($this->options[$name])) {
             throw new InvalidArgumentException(sprintf('The option "%s" does not exist.', $name));
@@ -47,7 +49,7 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
      * @param int $page
      * @return string
      */
-    protected function generateRoute($page)
+    protected function generateRoute(int $page): string
     {
         $generator = $this->getRouteGenerator();
 
@@ -70,7 +72,7 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
      * @param callable $routeGenerator
      * @throws InvalidArgumentException if the route generator is not a callable
      */
-    public function setRouteGenerator($routeGenerator): void
+    public function setRouteGenerator(callable $routeGenerator): void
     {
         if (!is_callable($routeGenerator)) {
             throw new InvalidArgumentException(sprintf('The $routeGenerator argument of %s() must be a callable, a %s was given.', __METHOD__, gettype($routeGenerator)));

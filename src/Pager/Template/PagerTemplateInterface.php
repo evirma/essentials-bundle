@@ -14,12 +14,12 @@ interface PagerTemplateInterface
      * @param array    $options
      * @return string
      */
-    public function render(Pager $pager, $routeGenerator, array $options = []);
+    public function render(Pager $pager, callable $routeGenerator, array $options = []): string;
 
     /**
      * Returns the canonical name.
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 }

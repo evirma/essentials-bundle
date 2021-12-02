@@ -2,7 +2,7 @@
 
 namespace Evirma\Bundle\EssentialsBundle\Pager\Twig;
 
-use Evirma\Bundle\EssentialsBundle\Locale\Locale;
+use Evirma\Bundle\EssentialsBundle\i18n\Locale;
 use Evirma\Bundle\EssentialsBundle\Pager\Pager;
 use Evirma\Bundle\EssentialsBundle\Pager\RouteGenerator\RouterRouteGenerator;
 use Evirma\Bundle\EssentialsBundle\Pager\Template\PagerTemplateBem;
@@ -26,9 +26,10 @@ class PagerExtension extends AbstractExtension
         $this->requestStack = $requestStack;
         $this->router = $router;
         if ($requestStack->getCurrentRequest()) {
-            $this->locale = $requestStack->getCurrentRequest()->getLocale();
+            $locale = Locale::tryFrom($requestStack->getCurrentRequest()->getLocale());
+            $this->locale =  $locale ?: Locale::RU;
         } else {
-            $this->locale = 'en';
+            $this->locale = Locale::EN;
         }
     }
 

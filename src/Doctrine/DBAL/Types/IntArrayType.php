@@ -15,7 +15,7 @@ class IntArrayType extends Type
         return 'int[]';
     }
 
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): array
     {
         if ($value === null || $value === '') {
             return array();
@@ -25,7 +25,7 @@ class IntArrayType extends Type
         return explode('","', trim($value, '{""}') );
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (null === $value) {
             return null;

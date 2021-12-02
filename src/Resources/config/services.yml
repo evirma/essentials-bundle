@@ -18,21 +18,21 @@ services:
       - '../../Service/{Abstract}Service.php'
     public: true
 
-#  Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
-#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension
-#    tags:
-#      - { name: twig.extension }
+  Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension:
+    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\DateExtension
+    tags:
+      - { name: twig.extension }
 #
-#  Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension:
-#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension
-#    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\RequestService' ]
-#    tags:
-#      - { name: twig.extension }
-#
-#  Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension:
-#    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension
-#    tags:
-#      - { name: twig.extension }
+  Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension:
+    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\UrlExtension
+    arguments: [ '@Evirma\Bundle\EssentialsBundle\Service\RequestService' ]
+    tags:
+      - { name: twig.extension }
+
+  Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension:
+    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\StupidExtension
+    tags:
+      - { name: twig.extension }
 #
 #  Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension:
 #    class: Evirma\Bundle\EssentialsBundle\Twig\Extension\Form\BootstrapExtension
@@ -51,12 +51,12 @@ services:
 #      - { name: twig.extension }
 #    public: true
 #
-#  Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension:
-#    class:     Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension
-#    arguments: [ '@router', '@request_stack']
-#    tags:
-#      - { name: twig.extension }
-#    public: true
+  Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension:
+    class:     Evirma\Bundle\EssentialsBundle\Pager\Twig\PagerExtension
+    arguments: [ '@router', '@request_stack']
+    tags:
+      - { name: twig.extension }
+    public: true
 #
 #  Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension:
 #    class: Evirma\Bundle\EssentialsBundle\Twig\TypeExtension\TabExtension
