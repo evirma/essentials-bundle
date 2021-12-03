@@ -53,6 +53,11 @@ class ArrayUtil
         return $merged;
     }
 
+    public static function hasKey(string|int $key, array $array): bool
+    {
+        return isset($array[$key]) || array_key_exists($key, $array);
+    }
+
     public static function hash(array $array): string
     {
         array_multisort($array);
