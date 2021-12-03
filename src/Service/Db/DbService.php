@@ -181,7 +181,7 @@ final class DbService
      * @param string $sql    The SQL query.
      * @param list<mixed>|array<string, mixed>                                     $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
-     * @return array
+     * @return list<int, mixed>
      * @throws SqlDriverException
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
@@ -230,9 +230,9 @@ final class DbService
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      *
-     * @return object
+     * @return mixed
      */
-    public function fetchObject(string $object, string $sql, array $params = [], array $types = []): object
+    public function fetchObject(string $object, string $sql, array $params = [], array $types = []): mixed
     {
         try {
             if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
