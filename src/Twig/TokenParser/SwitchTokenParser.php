@@ -100,7 +100,7 @@ class SwitchTokenParser extends AbstractTokenParser
     }
 
     /**
-     * Decide if current token marks end of swtich block.
+     * Decide if current token marks end of switch block.
      *
      * @param Token $token
      * @return bool

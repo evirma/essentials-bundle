@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection SpellCheckingInspection */
 
 declare(strict_types=1);
 
@@ -79,7 +79,7 @@ class RequestService
                 }
                 $link = preg_replace('/([&?])'.preg_quote($k)."=[^&]*[&]?/i", "\\1", $link);
             }
-            if (substr($link, -1, 1) == '&') {
+            if (str_ends_with($link, '&')) {
                 $link = substr($link, 0, -1);
             }
         }

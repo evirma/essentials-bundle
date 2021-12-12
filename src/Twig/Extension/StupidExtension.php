@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection SpellCheckingInspection */
 
 namespace Evirma\Bundle\EssentialsBundle\Twig\Extension;
 
@@ -92,8 +92,6 @@ class StupidExtension extends AbstractExtension
 
             new TwigFunction('is_ajax_request', [$this, 'isAjaxRequest']),
             new TwigFunction('array_intersect', [$this, 'arrayIntersect']),
-
-            new TwigFunction('get_cookie', [$this, 'getCookie']),
 
             new TwigFunction('static_var', function ($name) {
                 list($class, $property) = explode('::', $name, 2);
@@ -224,7 +222,7 @@ class StupidExtension extends AbstractExtension
             $imageInfo = getimagesize($file->getRealPath());
             $type = null;
             if (isset($imageInfo[0])) {
-                if (isset($imageInfo['mime']) && ($mime = $imageInfo['mime']) && preg_match('#^image/#', $mime)) {
+                if (isset($imageInfo['mime']) && ($mime = $imageInfo['mime']) && str_starts_with($mime, 'image/')) {
                     $type = strtoupper(str_replace('image/', '', $mime));
                 }
 
@@ -258,11 +256,6 @@ class StupidExtension extends AbstractExtension
         return array_shift($path) . ($path ? '[' . implode('][', $path) . ']' : '');
     }
 
-    public function getCookie($key)
-    {
-        return filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_STRING);
-    }
-
     public function jsonDecode($str, $assoc = false, $depth = 512, $options = 0)
     {
         return json_decode(html_entity_decode($str), $assoc, $depth, $options);
@@ -286,7 +279,7 @@ class StupidExtension extends AbstractExtension
         return $result;
     }
 
-    #[Pure] public function arrayIntersect(array $array1, array $array2): ArrayCollection|array
+    #[Pure] public function arrayIntersect(array|ArrayCollection $array1, array|ArrayCollection $array2): ArrayCollection|array
     {
         if ($array1 instanceof ArrayCollection && $array2 instanceof ArrayCollection) {
             return new ArrayCollection(

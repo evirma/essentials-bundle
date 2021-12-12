@@ -21,7 +21,7 @@ class BigintArrayType extends Type
         }
 
         $value = (is_resource($value)) ? stream_get_contents($value) : $value;
-        return explode('","', trim($value, '{""}') );
+        return explode('","', trim($value, '{"}') );
     }
 
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string

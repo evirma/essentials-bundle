@@ -134,7 +134,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable
             return $results->getIterator();
         }
 
-        return new ArrayIterator($results);
+        return new ArrayIterator((array)$results);
     }
 
     public function jsonSerialize(): ?iterable

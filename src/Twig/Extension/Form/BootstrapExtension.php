@@ -98,7 +98,7 @@ class BootstrapExtension extends AbstractExtension
                             $message .= '<b>'.$child->vars['label'].'</b>: ';
                         }
                         $message .= $error->getMessage();
-                        $result[] = sprintf('<label style="cursor: pointer" for="%s">%s</label>', $id, $message);
+                        $result[] = sprintf(/** @lang text */ '<label style="cursor: pointer" for="%s">%s</label>', $id, $message);
                     }
                 }
                 if (!empty($child->children)) {
@@ -222,15 +222,15 @@ class BootstrapExtension extends AbstractExtension
      */
     public function backupFormSettings(): void
     {
-        $settings = array(
+        $settings = [
             'style'     => $this->style,
             'colSize'   => $this->colSize,
             'widgetCol' => $this->widgetCol,
             'labelCol'  => $this->labelCol,
             'simpleCol' => $this->simpleCol,
-        );
+        ];
 
-        array_push($this->settingsStack, $settings);
+        $this->settingsStack[] = $settings;
     }
 
     /**

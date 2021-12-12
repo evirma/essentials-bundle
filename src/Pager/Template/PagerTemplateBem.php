@@ -82,7 +82,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
             return '';
         }
 
-        $href = $this->generateRoute($page < 1 ? 1 : $page);
+        $href = $this->generateRoute(max($page, 1));
         $maxIndexPages = $this->option('max_index_pages');
         $rel = ($page > $maxIndexPages) ? ' rel="noindex,nofollow"' : '';
 
@@ -123,7 +123,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
         } else {
             $text = '<span class="sr-only">Page </span>'.$page;
         }
-        $href = $this->generateRoute($page < 1 ? 1 : $page);
+        $href = $this->generateRoute(max($page, 1));
 
         $maxIndexPages = $this->option('max_index_pages');
 

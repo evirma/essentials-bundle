@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection SpellCheckingInspection */
 
 declare(strict_types=1);
 
