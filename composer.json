@@ -27,7 +27,6 @@
         "cocur/slugify": "^4.0",
         "antoligy/dom-string-iterators": "^1.0",
         "evirma/autotext-bundle": "^2.0",
-        "jetbrains/phpstorm-attributes": "^1.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.0",
         "symfony/framework-bundle": "^5.4",
