@@ -7,6 +7,9 @@ namespace Evirma\Bundle\EssentialsBundle\Traits;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
+/**
+ * @deprecated
+ */
 trait ConsoleLoggerTrait
 {
     protected LoggerInterface $logger;

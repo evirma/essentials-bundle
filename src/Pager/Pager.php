@@ -20,14 +20,12 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable
     private int $perPage = 10;
     private int $page = 1;
     private ?int $count = null;
-    /**
-     * @var iterable|null
-     */
     private ?iterable $items;
 
     public function __construct(PagerAdapterInterface $adapter)
     {
         $this->adapter = $adapter;
+        $this->items = null;
     }
 
     public function getAdapter(): PagerAdapterInterface

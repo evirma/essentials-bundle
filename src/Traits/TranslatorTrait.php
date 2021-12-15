@@ -17,17 +17,17 @@ trait TranslatorTrait
         $this->translator = $translator;
     }
 
-    public function getTranslator(): TranslatorInterface
+    protected function getTranslator(): TranslatorInterface
     {
         return $this->translator;
     }
 
-    public function plural($one, $two, $ten, $count): string
+    protected function plural($one, $two, $ten, $count): string
     {
         return $this->translator->trans("$one|$two|$ten", ['%count%' => $count]);
     }
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    protected function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

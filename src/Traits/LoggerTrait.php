@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
+ * @deprecated
  * @property ContainerInterface $container
  */
 trait LoggerTrait
