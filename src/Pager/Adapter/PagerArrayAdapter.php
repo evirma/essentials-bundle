@@ -7,9 +7,6 @@ namespace Evirma\Bundle\EssentialsBundle\Pager\Adapter;
 use function array_slice;
 use function count;
 
-/**
- * Adapter which calculates pagination from an array of items.
- */
 class PagerArrayAdapter implements PagerAdapterInterface
 {
     public function __construct(private array $array)

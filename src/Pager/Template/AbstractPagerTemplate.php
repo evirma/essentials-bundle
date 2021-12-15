@@ -9,20 +9,13 @@ use function is_callable;
 
 abstract class AbstractPagerTemplate implements PagerTemplateInterface
 {
-    /**
-     * @var array
-     */
     protected array $options = [];
-
-    /**
-     * @var string
-     */
     protected string $locale;
 
     /**
      * @var callable|null
      */
-    private $routeGenerator;
+    private mixed $routeGenerator = null;
 
     public function __construct($locale)
     {
