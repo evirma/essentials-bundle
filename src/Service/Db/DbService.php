@@ -476,14 +476,13 @@ final class DbService
         }
     }
 
-    /**
-     * @param null $seqName
-     * @return string
-     * @throws Exception
-     */
-    public function lastInsertId($seqName = null): string
+    public function lastInsertId(string $seqName = null): string
     {
-        return $this->db()->lastInsertId($seqName);
+        try {
+            return $this->db()->lastInsertId($seqName);
+        } catch (Exception $e) {
+            throw $this->convertException($e);
+        }
     }
 
     /**
