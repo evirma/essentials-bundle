@@ -2,6 +2,7 @@
 
 namespace Evirma\Bundle\EssentialsBundle\Pager\Template;
 
+use Evirma\Bundle\EssentialsBundle\i18n\Locale;
 use InvalidArgumentException;
 use RuntimeException;
 use function gettype;
@@ -10,23 +11,16 @@ use function is_callable;
 abstract class AbstractPagerTemplate implements PagerTemplateInterface
 {
     protected array $options = [];
-    protected string $locale;
 
     /**
      * @var callable|null
      */
     private mixed $routeGenerator = null;
 
-    public function __construct($locale)
+    public function __construct(protected Locale $locale)
     {
-        $this->locale = $locale;
     }
 
-    /**
-     * @param string $name The name of the option to look up
-     * @return mixed The option value if it exists
-     * @throws InvalidArgumentException if the option does not exist
-     */
     protected function option(string $name): mixed
     {
         if (!isset($this->options[$name])) {
@@ -36,12 +30,6 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
         return $this->options[$name];
     }
 
-    /**
-     * Generate the route (URL) for the given page.
-     *
-     * @param int $page
-     * @return string
-     */
     protected function generateRoute(int $page): string
     {
         $generator = $this->getRouteGenerator();
@@ -49,9 +37,6 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
         return $generator($page);
     }
 
-    /**
-     * @throws RuntimeException if the route generator has not been set
-     */
     protected function getRouteGenerator(): callable
     {
         if (!$this->routeGenerator) {
@@ -61,10 +46,6 @@ abstract class AbstractPagerTemplate implements PagerTemplateInterface
         return $this->routeGenerator;
     }
 
-    /**
-     * @param callable $routeGenerator
-     * @throws InvalidArgumentException if the route generator is not a callable
-     */
     public function setRouteGenerator(callable $routeGenerator): void
     {
         if (!is_callable($routeGenerator)) {

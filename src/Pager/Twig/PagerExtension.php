@@ -93,7 +93,7 @@ class PagerExtension extends AbstractExtension
         return new RouterRouteGenerator($this->router, $options);
     }
 
-    #[Pure] private function getPagerTemplateByName($name, $locale = null): PagerTemplateDefault|PagerTemplateBem
+    #[Pure] private function getPagerTemplateByName(string $name, ?Locale $locale = null): PagerTemplateDefault|PagerTemplateBem
     {
         if (!$locale) {
             $locale = $this->locale;

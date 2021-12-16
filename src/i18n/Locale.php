@@ -8,4 +8,15 @@ enum Locale: string {
     case RU = 'ru';
     case EN = 'en';
     case DE = 'de';
+
+    public function isRu(): bool
+    {
+        return $this === Locale::RU;
+    }
+
+    public function isEn(): bool
+    {
+        return $this === Locale::EN;
+    }
+
 }

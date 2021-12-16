@@ -50,7 +50,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
         }
 
         if ($this->option('show_digit_pages')) {
-            $navLabel = ($this->locale == 'ru') ? 'Постраничная навигация' : 'Pagination Navigation';
+            $navLabel = $this->locale->isRu() ? 'Постраничная навигация' : 'Pagination Navigation';
             $result .= '<nav class="pager__nav"><ul class="pager__pages" aria-label="'. $navLabel . '">';
             $result .= $this->first();
 
@@ -88,8 +88,8 @@ class PagerTemplateBem extends AbstractPagerTemplate
 
         $nextPageButtonPrepend = $this->option('next_page_button_prepend');
 
-        $nextPageText = ($this->locale == 'ru') ? 'Следующая страница' : 'Show More';
-        $navNextLabel = ($this->locale == 'ru') ? 'Быстрая навигация' : 'Fast Navigation';
+        $nextPageText = $this->locale->isRu() ? 'Следующая страница' : 'Show More';
+        $navNextLabel = $this->locale->isRu() ? 'Быстрая навигация' : 'Fast Navigation';
 
         $class = ($this->pages < 2) ? ' pager__next--single'  : '';
         return "<nav class=\"pager__next\"><ul class=\"pager__next-list$class\" aria-label=\"$navNextLabel\">$nextPageButtonPrepend<li class=\"pager__next-item\"><a$rel class=\"pager__next-link\" href=\"$href\">$nextPageText &rarr;</a></li></ul></nav>";
@@ -118,7 +118,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
     {
         $hiddenClass = $isHidden ? ' pager__page-desktop' : '';
 
-        if ($this->locale == 'ru') {
+        if ($this->locale->isRu()) {
             $text = '<span class="sr-only">Страница №</span>'.$page;
         } else {
             $text = '<span class="sr-only">Page </span>'.$page;
@@ -140,7 +140,7 @@ class PagerTemplateBem extends AbstractPagerTemplate
 
     public function current($page): string
     {
-        $pageText = $this->locale == 'ru' ? 'Страница №' : 'Page ';
+        $pageText = $this->locale->isRu() ? 'Страница №' : 'Page ';
         $text = "<span class=\"sr-only\">$pageText</span>" . trim($page.' '.$this->option('active_suffix'));
         return '<li class="pager__page pager__page-active"><span>'.$text.'</span></li>';
     }

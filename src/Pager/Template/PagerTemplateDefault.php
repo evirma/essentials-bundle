@@ -87,7 +87,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
 
         $nextPageButtonPrepend = $this->option('next_page_button_prepend');
 
-        $nextPageText = ($this->locale == 'ru') ? 'Следующая страница' : 'Show More';
+        $nextPageText = $this->locale->isRu() ? 'Следующая страница' : 'Show More';
 
         return "<div class=\"next-page\">$nextPageButtonPrepend<a$rel href=\"$href\" class=\"pager-next-link btn btn-lg btn-main\">$nextPageText &rarr;</a></div>";
     }
@@ -115,7 +115,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
     {
         $hiddenClass = $isHidden ? ' hidden-xs' : '';
 
-        if ($this->locale == 'ru') {
+        if ($this->locale->isRu()) {
             $text = '<span class="sr-only">Страница №</span>'.$page;
         } else {
             $text = '<span class="sr-only">Page </span>'.$page;
@@ -137,7 +137,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
 
     public function current($page): string
     {
-        $pageText = $this->locale == 'ru' ? 'Страница №' : 'Page ';
+        $pageText = $this->locale->isRu() ? 'Страница №' : 'Page ';
         $text = "<span class=\"sr-only\">$pageText</span>" . trim($page.' '.$this->option('active_suffix'));
         return '<li class="page page-active"><span>'.$text.'</span></li>';
     }
