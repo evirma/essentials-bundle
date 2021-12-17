@@ -25,7 +25,6 @@
         "ext-libxml": "*",
         "ext-iconv": "*",
         "cocur/slugify": "^4.0",
-        "antoligy/dom-string-iterators": "^1.0",
         "evirma/autotext-bundle": "^2.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.0",
@@ -44,7 +43,14 @@
         "symfony/expression-language": "^5.2",
         "symfony/monolog-bundle": "^3.6",
         "symfony/webpack-encore-bundle": "^1.8",
-        "jetbrains/phpstorm-attributes": "^1.0"
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "league/commonmark": "^1.6.0",
+        "meniam/typograph-bundle": "^1.0",
+        "tgalopin/html-sanitizer": "^1.4",
+        "tijsverkoyen/css-to-inline-styles": "^2.2.0",
+        "antoligy/dom-string-iterators": "^1.0",
+        "html2text/html2text": "^4.2",
+        "symfony/serializer": "^5.2"
     },
     "require-dev": {
         "symfony/debug-pack": "^1.0",
