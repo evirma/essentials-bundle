@@ -24,7 +24,6 @@
         "ext-gd": "*",
         "ext-libxml": "*",
         "ext-iconv": "*",
-        "cocur/slugify": "^4.0",
         "evirma/autotext-bundle": "^2.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.0",
@@ -50,7 +49,9 @@
         "tijsverkoyen/css-to-inline-styles": "^2.2.0",
         "antoligy/dom-string-iterators": "^1.0",
         "html2text/html2text": "^4.2",
-        "symfony/serializer": "^5.2"
+        "symfony/serializer": "^5.2",
+        "cocur/slugify": "^4.0",
+        "ramsey/uuid-doctrine": "^1.6"
     },
     "require-dev": {
         "symfony/debug-pack": "^1.0",
