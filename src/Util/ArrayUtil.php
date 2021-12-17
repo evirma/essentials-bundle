@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace Evirma\Bundle\EssentialsBundle\Util;
 
 use ArrayObject;
+use Doctrine\Common\Collections\ArrayCollection;
+use JetBrains\PhpStorm\Pure;
 
-class ArrayUtil
+final class ArrayUtil
 {
+    final private function __construct()
+    {}
+
     public static function reindexArray(array $array, string $keyToIndex = 'id'): array
     {
         $result = [];
@@ -100,5 +105,17 @@ class ArrayUtil
         }
 
         return $result;
+    }
+
+    #[Pure]
+    public static function intersect(array|ArrayCollection $array1, array|ArrayCollection $array2): ArrayCollection|array
+    {
+        if ($array1 instanceof ArrayCollection && $array2 instanceof ArrayCollection) {
+            return new ArrayCollection(
+                array_merge($array1->toArray(), $array1->toArray())
+            );
+        }
+
+        return array_intersect($array1, $array2);
     }
 }
