@@ -1,6 +1,6 @@
 <?php
 
-namespace Evirma\Bundle\CoreBundle\Service;
+namespace Evirma\Bundle\EssentialsBundle\Service;
 
 use Closure;
 
