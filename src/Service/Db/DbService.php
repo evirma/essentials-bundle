@@ -22,42 +22,32 @@ final class DbService
 {
     use CacheTrait;
 
-    private ?string $connectionName;
-    private ManagerRegistry $manager;
-    private ?LoggerInterface $logger;
-    private ?Connection $db = null;
-
-    /** @var array<DbService> */
+    /** @var array<string, DbService> */
     private array $servers = [];
 
-    public function __construct(ManagerRegistry $manager, ?LoggerInterface $logger = null, ?string $connectionName = null)
+    private ?Connection $db = null;
+
+    public function __construct(private ManagerRegistry $manager, private ?LoggerInterface $logger = null, private string $connectionName = 'default')
     {
-        $this->logger = $logger;
-        $this->connectionName = $connectionName;
-        $this->manager = $manager;
     }
 
-    /**
-     * @param string|null $connectionName
-     * @return $this
-     */
-    public function server(string $connectionName = null): Dbservice
+    public function server(string $connectionName = 'default'): DbService
     {
         if ($this->connectionName == $connectionName) {
             return $this;
         }
 
-        $cacheName = $connectionName ?: 'default';
-        if (!isset($this->servers[$cacheName])) {
-            $this->servers[$cacheName] = new DbService($this->manager, $this->logger, $connectionName);
+        $conn = $this->servers[$connectionName] ?? null;
+
+        if ($conn instanceof DbService) {
+            return $conn;
         }
 
-        return $this->servers[$cacheName];
+        $dbService = new DbService($this->manager, $this->logger, $connectionName);
+        $this->servers[$connectionName] = $dbService;
+        return $dbService;
     }
 
-    /**
-     * @return ManagerRegistry
-     */
     public function getDoctrineManager(): ManagerRegistry
     {
         return $this->manager;
@@ -181,7 +171,7 @@ final class DbService
      * @param string $sql    The SQL query.
      * @param list<mixed>|array<string, mixed>                                     $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
-     * @return list<int, mixed>
+     * @return list<array<string, mixed>>
      * @throws SqlDriverException
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
@@ -476,10 +466,10 @@ final class DbService
         }
     }
 
-    public function lastInsertId(string $seqName = null): string
+    public function lastInsertId(?string $seqName = null): string
     {
         try {
-            return $this->db()->lastInsertId($seqName);
+            return (string)$this->db()->lastInsertId($seqName);
         } catch (Exception $e) {
             throw $this->convertException($e);
         }

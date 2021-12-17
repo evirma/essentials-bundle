@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Evirma\Bundle\EssentialsBundle\Traits;
 
 use Evirma\Bundle\EssentialsBundle\Service\MemcacheService;
-use JetBrains\PhpStorm\Pure;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait CacheTrait
 {
@@ -93,10 +93,7 @@ trait CacheTrait
         return $this->memcache;
     }
 
-    /**
-     * @required
-     * @param MemcacheService $memcache
-     */
+    #[Required]
     public function setMemcache(MemcacheService $memcache): void
     {
         $this->memcache = $memcache;
@@ -126,7 +123,8 @@ trait CacheTrait
         return $result;
     }
 
-    #[Pure] protected function isCacheAllowed(bool $cached = true): bool
+    /** @noinspection PhpPureAttributeCanBeAddedInspection */
+    protected function isCacheAllowed(bool $cached = true): bool
     {
         return MemcacheService::isCacheAllowed($cached);
     }
@@ -171,12 +169,6 @@ trait CacheTrait
         return $result;
     }
 
-    /**
-     * @param string     $cacheId
-     * @param mixed      $data
-     * @param string|int $ttl
-     * @return mixed
-     */
     protected function setCacheItem(string $cacheId, mixed $data, string|int $ttl = 'cache_ttl_middle'): mixed
     {
         if ($ttl == 'cache_ttl_middle') {

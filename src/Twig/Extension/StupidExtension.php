@@ -28,7 +28,6 @@ class StupidExtension extends AbstractExtension
 
             new TwigFilter('humansize', [StringUtil::class, 'humanSize']),
 
-
             new TwigFilter('ltrim', ['ltrim']),
             new TwigFilter('rtrim', ['rtrim']),
 
@@ -142,7 +141,7 @@ class StupidExtension extends AbstractExtension
         return YamlUtil::decode($data);
     }
 
-    public function noindex($text): string
+    public function noindex(string $text = ''): string
     {
         $lines = [];
         $lines[] = '<!--googleoff: all-->';
@@ -153,7 +152,7 @@ class StupidExtension extends AbstractExtension
         return implode("\n", $lines);
     }
 
-    public function putToStorage($var, $value)
+    public function putToStorage(string $var, mixed $value)
     {
         $this->storage[$var] = $value;
     }
@@ -261,12 +260,12 @@ class StupidExtension extends AbstractExtension
         return json_decode(html_entity_decode($str), $assoc, $depth, $options);
     }
 
-    public function jsonEncode($str): bool|string
+    public function jsonEncode(array $array): bool|string
     {
-        return json_encode($str, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        return json_encode($array, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
 
-    public function headtag($content): string
+    public function headtag(string $content = ''): string
     {
         $lines = array_map('trim', explode("\n", $content));
         $lines = array_filter($lines);

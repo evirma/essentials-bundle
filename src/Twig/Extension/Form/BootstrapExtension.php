@@ -193,22 +193,12 @@ class BootstrapExtension extends AbstractExtension
         return $this->labelCol;
     }
 
-    /**
-     * Sets the number of columns of simple widgets.
-     *
-     * @param integer $simpleCol Number of columns.
-     */
     public function setSimpleCol(int $simpleCol)
     {
         $this->simpleCol = $simpleCol;
     }
 
-    /**
-     * Returns the number of columns of simple widgets.
-     *
-     * @return integer Number of columns.
-     */
-    public function getSimpleCol(): int
+    public function getSimpleCol(): ?int
     {
         return $this->simpleCol;
     }

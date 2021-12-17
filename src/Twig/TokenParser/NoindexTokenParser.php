@@ -3,7 +3,6 @@
 namespace Evirma\Bundle\EssentialsBundle\Twig\TokenParser;
 
 use Evirma\Bundle\EssentialsBundle\Twig\Node\NoindexNode;
-use JetBrains\PhpStorm\Pure;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
 
@@ -22,7 +21,8 @@ class NoindexTokenParser extends AbstractTokenParser
         return new NoindexNode($body, $lineno, $this->getTag());
     }
 
-    #[Pure] public function decideMarkdownEnd(Token $token): bool
+    /** @noinspection PhpPureAttributeCanBeAddedInspection */
+    public function decideMarkdownEnd(Token $token): bool
     {
         return $token->test('endnoindex');
     }

@@ -47,7 +47,8 @@
         "jetbrains/phpstorm-attributes": "^1.0"
     },
     "require-dev": {
-        "symfony/debug-pack": "^1.0"
+        "symfony/debug-pack": "^1.0",
+        "evirma/code-pack": "^1.0"
     },
     "minimum-stability": "stable",
     "autoload": {

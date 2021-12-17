@@ -1,10 +1,10 @@
-<?php /** @noinspection SpellCheckingInspection */
+<?php /** @noinspection PhpPureAttributeCanBeAddedInspection */
+
+/** @noinspection SpellCheckingInspection */
 
 declare(strict_types=1);
 
 namespace Evirma\Bundle\EssentialsBundle\Util;
-
-use JetBrains\PhpStorm\Pure;
 
 final class StringUtil
 {
@@ -44,14 +44,22 @@ final class StringUtil
         return (bool)preg_match($upper, $word);
     }
 
-    #[Pure] public static function isLowerCase(?string $str): bool
+    public static function isLowerCase(?string $str, string $encoding = 'UTF-8'): bool
     {
-        return ($str === self::lower($str));
+        if (!$str) {
+            return true;
+        }
+
+        return ($str === mb_strtolower($str, $encoding));
     }
 
-    #[Pure] public static function isUpperCase(?string $str): bool
+    public static function isUpperCase(?string $str, string $encoding = 'UTF-8'): bool
     {
-        return ($str === self::upper($str));
+        if (!$str) {
+            return true;
+        }
+
+        return ($str === mb_strtoupper($str, $encoding));
     }
 
     public static function lower(?string $str, $encoding = 'UTF-8'): string
@@ -136,7 +144,8 @@ final class StringUtil
         return (string)$result;
     }
 
-    #[Pure] public static function safeTruncate(?string $str, int $limit = 150): string
+    /** @noinspection PhpPureAttributeCanBeAddedInspection */
+    public static function safeTruncate(?string $str, int $limit = 150): string
     {
         if (!$str) {
             return '';

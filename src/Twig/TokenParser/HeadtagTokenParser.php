@@ -3,7 +3,6 @@
 namespace Evirma\Bundle\EssentialsBundle\Twig\TokenParser;
 
 use Evirma\Bundle\EssentialsBundle\Twig\Node\HeadtagNode;
-use JetBrains\PhpStorm\Pure;
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;
 
@@ -27,13 +26,8 @@ class HeadtagTokenParser extends AbstractTokenParser
         return new HeadtagNode($body, $lineno, $this->getTag());
     }
 
-    /**
-     * Decide if current token marks end of Markdown block.
-     *
-     * @param Token $token
-     * @return bool
-     */
-    #[Pure] public function decideHeadtagEnd(Token $token): bool
+    /** @noinspection PhpPureAttributeCanBeAddedInspection */
+    public function decideHeadtagEnd(Token $token): bool
     {
         return $token->test('endheadtag');
     }

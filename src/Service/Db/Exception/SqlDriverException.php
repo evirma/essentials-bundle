@@ -19,27 +19,17 @@ class SqlDriverException extends RuntimeException
     }
 
     /**
-     * Returns the driver specific error code if given.
-     * Returns null if no error code was given by the driver.
-     *
-     * @return int
+     * @return int|string
      */
-    public function getErrorCode(): int
+    public function getErrorCode(): int|string
     {
         if ($this->driverException instanceof DBALDriverException) {
             return $this->driverException->getCode();
         }
 
-        return $this->getCode();
+        return (int)$this->getCode();
     }
 
-    /**
-     * Returns the SQLSTATE the driver was in at the time the error occurred, if given.
-     *
-     * Returns null if no SQLSTATE was given by the driver.
-     *
-     * @return string|null
-     */
     public function getSQLState(): ?string
     {
         if ($this->driverException instanceof DBALDriverException) {

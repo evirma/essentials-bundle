@@ -1,9 +1,8 @@
-<?php
+<?php /** @noinspection PhpPureAttributeCanBeAddedInspection */
 
 namespace Evirma\Bundle\EssentialsBundle\Twig\TokenParser;
 
 use Evirma\Bundle\EssentialsBundle\Twig\Node\SwitchNode;
-use JetBrains\PhpStorm\Pure;
 use Twig\Error\SyntaxError;
 use Twig\Node\Node;
 use Twig\Token;
@@ -88,24 +87,12 @@ class SwitchTokenParser extends AbstractTokenParser
         return new SwitchNode($name, new Node($cases), $default, $lineno, $this->getTag());
     }
 
-    /**
-     * Decide if current token marks switch logic.
-     *
-     * @param Token $token
-     * @return bool
-     */
-    #[Pure] public function decideIfFork(Token $token): bool
+    public function decideIfFork(Token $token): bool
     {
         return $token->test(array('case', 'default', 'endswitch'));
     }
 
-    /**
-     * Decide if current token marks end of switch block.
-     *
-     * @param Token $token
-     * @return bool
-     */
-    #[Pure] public function decideIfEnd(Token $token): bool
+    public function decideIfEnd(Token $token): bool
     {
         return $token->test(array('endswitch'));
     }
