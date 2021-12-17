@@ -44,7 +44,7 @@
         "symfony/webpack-encore-bundle": "^1.8",
         "jetbrains/phpstorm-attributes": "^1.0",
         "league/commonmark": "^1.6.0",
-        "meniam/typograph-bundle": "^1.0",
+        "meniam/typograph-bundle": "^2.0",
         "tgalopin/html-sanitizer": "^1.4",
         "tijsverkoyen/css-to-inline-styles": "^2.2.0",
         "antoligy/dom-string-iterators": "^1.0",
