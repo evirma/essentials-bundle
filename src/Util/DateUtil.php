@@ -83,4 +83,8 @@ class DateUtil
         }
     }
 
+    public static function currentYear(): string
+    {
+        return date('Y');
+    }
 }

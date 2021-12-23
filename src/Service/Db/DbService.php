@@ -560,7 +560,7 @@ final class DbService
             return 'NOTHING';
         }
 
-        $doStr = 'DO UPDATE SET ';
+        $doStr = 'UPDATE SET ';
         foreach ($do as $key => $field) {
             if (is_int($key)) {
                 $doStr .= "$field = EXCLUDED.$field, ";
