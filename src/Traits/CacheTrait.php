@@ -252,7 +252,7 @@ trait CacheTrait
         return mt_rand(7 * 86400, 21 * 86400);
     }
 
-    protected function setCacheProfilerEnable(bool $status)
+    protected function setCacheProfilerEnable(bool $status): void
     {
         MemcacheService::$profilerEnable = $status;
     }

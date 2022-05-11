@@ -12,7 +12,7 @@ trait DbAwareTrait
     protected DbService $db;
 
     #[Required]
-    public function setDb(DbService $dbService)
+    public function setDb(DbService $dbService): void
     {
         $this->db = $dbService;
     }

@@ -27,7 +27,7 @@ final class DbService
 
     private ?Connection $db = null;
 
-    public function __construct(private ManagerRegistry $manager, private ?LoggerInterface $logger = null, private string $connectionName = 'default')
+    public function __construct(private readonly ManagerRegistry $manager, private ?LoggerInterface $logger = null, private readonly string $connectionName = 'default')
     {
     }
 

@@ -8,7 +8,7 @@ class CurlMultiService
 {
     protected array $threads = [];
 
-    public function addTread(string $url, string|Closure $callback, array $curlOpts = [])
+    public function addTread(string $url, string|Closure $callback, array $curlOpts = []): void
     {
         $thread = [
             'url' => $url,

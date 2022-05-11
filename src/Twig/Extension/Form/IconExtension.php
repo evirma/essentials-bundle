@@ -39,7 +39,7 @@ class IconExtension extends AbstractExtension
         }
 
         return (string)preg_replace_callback(
-            '/\.([a-z]+-[a-z0-9+-]+)/',
+            '/\.([a-z]+-[a-z\d+-]+)/',
             function ($matches) use ($that) {
                 return $that->getIconFilter($matches[1]);
             },

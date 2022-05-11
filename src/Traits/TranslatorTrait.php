@@ -12,7 +12,7 @@ trait TranslatorTrait
     private TranslatorInterface $translator;
 
     #[Required]
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

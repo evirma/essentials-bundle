@@ -9,7 +9,7 @@ use function count;
 
 class PagerArrayAdapter implements PagerAdapterInterface
 {
-    public function __construct(private array $array)
+    public function __construct(private readonly array $array)
     {
     }
 

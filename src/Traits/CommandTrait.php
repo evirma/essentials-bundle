@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 trait CommandTrait
 {
-    protected function outputCommandHelp(Command $command, InputInterface $input, OutputInterface $output)
+    protected function outputCommandHelp(Command $command, InputInterface $input, OutputInterface $output): void
     {
         $help = new HelpCommand();
         $help->setCommand($command);

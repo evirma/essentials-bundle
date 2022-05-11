@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class RequestService
 {
-    public function __construct(private RequestStack $requestStack, private  RouterInterface $router)
+    public function __construct(private readonly RequestStack $requestStack, private readonly RouterInterface $router)
     {
     }
 
@@ -77,7 +77,7 @@ class RequestService
                 if (!$isLinkDecoded) {
                     $k = urlencode($k);
                 }
-                $link = preg_replace('/([&?])'.preg_quote($k)."=[^&]*[&]?/i", "\\1", $link);
+                $link = preg_replace('/([&?])'.preg_quote($k)."=[^&]*&?/i", "\\1", $link);
             }
             if (str_ends_with($link, '&')) {
                 $link = substr($link, 0, -1);

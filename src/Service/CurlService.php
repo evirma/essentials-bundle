@@ -9,7 +9,7 @@ final class CurlService
     const ROTATE_IPS = 'rorate_ips';
     const ROTATE_PROXY_IPS = 'rorate_proxy_ips';
 
-    private $_cookieArr = array();
+    private array $_cookieArr = [];
     private $_cookie = null;
     private $_followLocation = true;
     private $_encoding = null;
@@ -48,7 +48,7 @@ final class CurlService
         'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.1) Gecko/20090714 SUSE/3.5.1-1.1 Firefox/3.5.1'
     ];
 
-    public function rotateIps()
+    public function rotateIps(): void
     {
         if (!self::$rotateIps || (count(self::$ips) < 2)) {
             return;
@@ -102,17 +102,17 @@ final class CurlService
         return self::$previousIp;
     }
 
-    public static function setRotateIps($flag = true)
+    public static function setRotateIps($flag = true): void
     {
         self::$rotateIps = $flag;
     }
 
-    public static function setRotateProxyIps($flag = true)
+    public static function setRotateProxyIps($flag = true): void
     {
         self::$rotateProxyIps = $flag;
     }
 
-    public static function getLastProxy()
+    public static function getLastProxy(): ?string
     {
         return self::$previousProxyIp;
     }
@@ -189,7 +189,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    public function put($url, $data = array(), $encoding = null)
+    public function put($url, array $data = [], $encoding = null)
     {
         $this->_lastRedirectDestination = '';
         $this->setOpt(CURLOPT_CUSTOMREQUEST, "PUT");
@@ -204,7 +204,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    public function post($url, $data = array(), $encoding = null)
+    public function post($url, array $data = [], $encoding = null)
     {
         $this->_lastRedirectDestination = '';
         $this->setOpt(CURLOPT_POST, true);
@@ -227,11 +227,11 @@ final class CurlService
     /**
      * @param      $url
      * @param null $encoding
-     * @param int  $try
+     * @param int $try
      *
      * @return CurlService
      */
-    protected function _load($url, $encoding = null, $try = 1)
+    protected function _load($url, $encoding = null, int $try = 1)
     {
         $this->setOpt(CURLOPT_URL, $url);
 
@@ -253,7 +253,7 @@ final class CurlService
             $_loc = parse_url($location);
             if (!array_key_exists('host', $_loc) || empty($_loc['host'])) {
                 $delim = '';
-                if (substr($location, 0, 1) != '/') {
+                if (!str_starts_with($location, '/')) {
                     $delim = '/';
                 }
 
@@ -297,13 +297,14 @@ final class CurlService
         }
 
         $splitArray = preg_split("#\r?\n\r?\n#", trim($contents), 2);
+        $this->_data['header'] = $splitArray[0];
+
         if (count($splitArray) == 2) {
-            $this->_data['header'] = $splitArray[0];
             $this->_data['body'] = $splitArray[1];
         } else {
-            $this->_data['header'] = $splitArray[0];
             $this->_data['body'] = null;
         }
+
         $this->_data['code'] = curl_getinfo($this->getHandler(), CURLINFO_HTTP_CODE);
         $this->parseHeader();
         $this->bodyDecode($encoding);
@@ -368,7 +369,7 @@ final class CurlService
         return $this->_data['body'];
     }
 
-    public function setOpt(int|string $opt, mixed $val = false)
+    public function setOpt(int|string|array $opt, mixed $val = false): CurlService
     {
         if (is_array($opt)) {
             foreach ($opt as $k => $v) {
@@ -419,7 +420,7 @@ final class CurlService
         return $this->_handler;
     }
 
-    public function parseHeader()
+    public function parseHeader(): CurlService
     {
         $lines = array_map('trim', explode("\n", $this->getHeader()));
         unset($lines[0]);
@@ -461,6 +462,7 @@ final class CurlService
         $bodyCharset = null;
         $headerCharset = null;
 
+        /** @noinspection PhpRegExpRedundantModifierInspection */
         if (preg_match('#charset\s*=\s*([^\s\r\n]+)#si', $this->getHeader('content-type'), $m)) {
             $headerCharset = $m[1];
         }
@@ -492,12 +494,6 @@ final class CurlService
         return preg_replace(array_keys($assoc), array_values($assoc), $result);
     }
 
-
-    /**
-     * получение cookie
-     *
-     * @return string с параметрами
-     */
     function parseCookie()
     {
         if ($this->_disableCookie !== false) {
@@ -506,13 +502,14 @@ final class CurlService
 
         preg_match_all('#Set-Cookie:([^\n]*)([\n]|)$#Umi', $this->getHeader(), $matches);
 
-        foreach ($matches[1] as $k => $v) {
+        foreach ($matches[1] as $v) {
             $cookiestr = trim($v);
 
             $cookie = explode(';', $cookiestr);
             $cookie = explode('=', $cookie[0]);
             $cookiename = trim(array_shift($cookie));
 
+            /** @noinspection PhpRegExpRedundantModifierInspection */
             if (preg_match('#Expires=([^;]+);#usi', $cookiestr, $m)) {
                 if (strtotime($m[1]) < time()) {
                     unset($this->_cookieArr[$cookiename]);

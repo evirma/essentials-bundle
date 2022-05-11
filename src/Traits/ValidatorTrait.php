@@ -22,7 +22,7 @@ trait ValidatorTrait
     protected ValidatorInterface $validatorManager;
 
     #[Required]
-    public function setValidator(ValidatorInterface $validator)
+    public function setValidator(ValidatorInterface $validator): void
     {
         $this->validatorManager = $validator;
     }
@@ -43,11 +43,8 @@ trait ValidatorTrait
      */
     protected function validateValue(mixed $value, mixed $constraints = null, mixed $groups = null): ConstraintViolationListInterface
     {
-        /** @noinspection PhpUnnecessaryLocalVariableInspection */
-        /** @var ConstraintViolationList|ConstraintViolation[] $violationList */
-        $violationList = $this->getValidator()->validate($value, $constraints, $groups);
-
-        return $violationList;
+        /** @var ConstraintViolationList<ConstraintViolation> */
+        return $this->getValidator()->validate($value, $constraints, $groups);
     }
 
     /**

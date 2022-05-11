@@ -28,12 +28,12 @@ class MemcacheService
     public static array $profiler = [];
 
     #[Required]
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
 
-    public static function setCacheAllowed(bool $state)
+    public static function setCacheAllowed(bool $state): void
     {
         self::$isCacheAllowed = $state;
     }
@@ -41,7 +41,7 @@ class MemcacheService
     /**
      * @param $prefix
      */
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }

@@ -11,7 +11,7 @@ namespace Evirma\Bundle\EssentialsBundle\Pager\Adapter;
  */
 class PagerFixedAdapter implements PagerAdapterInterface
 {
-    public function __construct(private int $count, private iterable $results)
+    public function __construct(private readonly int $count, private readonly iterable $results)
     {
     }
 

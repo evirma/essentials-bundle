@@ -10,7 +10,7 @@ use Twig\TwigFunction;
 
 class UrlExtension extends AbstractExtension
 {
-    public function __construct(private RequestService $requestService)
+    public function __construct(private readonly RequestService $requestService)
     {
     }
 

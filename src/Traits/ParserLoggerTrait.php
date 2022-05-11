@@ -15,7 +15,7 @@ trait ParserLoggerTrait
     protected LoggerInterface $logger;
 
     #[Required]
-    public function setLogger(LoggerInterface $consoleLogger)
+    public function setLogger(LoggerInterface $consoleLogger): void
     {
         $this->logger = $consoleLogger;
     }
