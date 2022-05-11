@@ -38,6 +38,7 @@
         "symfony/console": "^5.4|^6.0",
         "symfony/yaml": "^5.4|^6.0",
         "symfony/lock": "^5.4|^6.0",
+        "symfony/serializer": "^5.4|^6.0",
         "symfony/maker-bundle": "^1.24",
         "symfony/expression-language": "^5.2|^6.0",
         "symfony/monolog-bundle": "^3.6",
@@ -49,7 +50,6 @@
         "tijsverkoyen/css-to-inline-styles": "^2.2.0",
         "antoligy/dom-string-iterators": "^1.0",
         "html2text/html2text": "^4.2",
-        "symfony/serializer": "^5.2",
         "cocur/slugify": "^4.0",
         "ramsey/uuid-doctrine": "^1.6"
     },
