@@ -31,4 +31,9 @@ trait TranslatorTrait
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
+
+    protected function transArray(array $array): string
+    {
+        return $this->translator->trans($array['id'] ?? '', (array)($array['parameters']??[]), $array['domain'] ?? null, $array['local'] ?? null);
+    }
 }
