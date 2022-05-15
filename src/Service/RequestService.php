@@ -33,8 +33,6 @@ class RequestService
      * @param array       $parameters
      * @param int         $referenceType
      * @return string
-     * @internal param string $link URL, которая будет преобразована. Если не задана - текущий URL страницы
-     * @internal param array $params
      */
     public function urlSaveGet(array $replace = [], array $delete = [], ?string $route = null, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {

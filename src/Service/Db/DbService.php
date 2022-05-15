@@ -167,11 +167,12 @@ final class DbService
     /**
      * Prepares and executes an SQL query and returns the result as an associative array.
      *
-     * @param string $object The Object Class
+     * @template T
+     * @param class-string<T> $object The Object Class
      * @param string $sql    The SQL query.
      * @param list<mixed>|array<string, mixed>                                     $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
-     * @return list<array<string, mixed>>
+     * @return list<T>
      * @throws SqlDriverException
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
@@ -215,12 +216,13 @@ final class DbService
     }
 
     /**
-     * @param string $object
+     * @template T
+     * @param class-string<T> $object The Object Class
      * @param string $sql
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      *
-     * @return mixed
+     * @return T
      */
     public function fetchObject(string $object, string $sql, array $params = [], array $types = []): mixed
     {
