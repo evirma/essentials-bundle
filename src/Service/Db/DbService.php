@@ -222,7 +222,7 @@ final class DbService
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null>|null $types Parameter types
      *
-     * @return T
+     * @return ?T
      */
     public function fetchObject(string $object, string $sql, array $params = [], array $types = []): mixed
     {
