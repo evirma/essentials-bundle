@@ -220,7 +220,7 @@ final class DbService
      * @param class-string<T> $object The Object Class
      * @param string $sql
      * @param list<mixed>|array<string, mixed> $params Query parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null>|null $types Parameter types
      *
      * @return T
      */
@@ -229,6 +229,8 @@ final class DbService
         try {
             if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
                 $item = $this->createObject($object, $item);
+            } else {
+                return null;
             }
         } catch (Exception $e) {
             throw $this->convertException($e, $sql, $params, $types);
