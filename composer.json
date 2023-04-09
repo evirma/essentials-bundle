@@ -49,9 +49,9 @@
         "tijsverkoyen/css-to-inline-styles": "^2.2.0",
         "antoligy/dom-string-iterators": "^1.0",
         "html2text/html2text": "^4.2",
-        "cocur/slugify": "^4.0",
         "ramsey/uuid-doctrine": "^1.6",
-        "symfony/html-sanitizer": "^6.0"
+        "symfony/html-sanitizer": "^6.0",
+        "symfony/string": "^6.0"
     },
     "require-dev": {
         "symfony/debug-pack": "^1.0",
