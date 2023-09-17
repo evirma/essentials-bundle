@@ -338,7 +338,7 @@ final class CurlService
         if (!$this->isRedirect()) {
             return '';
         } else if ($this->getHeader('location')) {
-            return $this->getHeader('location');
+            return (string)$this->getHeader('location');
         } else {
             return '';
         }

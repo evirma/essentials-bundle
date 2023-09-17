@@ -445,7 +445,7 @@ final class DbService
     public function executeStatement(string $sql, array $params = [], array $types = []): int
     {
         try {
-            return $this->db()->executeStatement($sql, $params, $types);
+            return (int)$this->db()->executeStatement($sql, $params, $types);
         } catch (Exception $e) {
             throw $this->convertException($e, $sql, $params, $types);
         }
@@ -464,7 +464,7 @@ final class DbService
     public function insert(string $tableExpression, array $data, array $types = []): int
     {
         try {
-            return $this->db()->insert($tableExpression, $data, $types);
+            return (int)$this->db()->insert($tableExpression, $data, $types);
         } catch (Exception $e) {
             throw $this->convertException($e);
         }
@@ -512,22 +512,23 @@ final class DbService
     public function delete(string $table, array $criteria, array $types = []): int
     {
         try {
-            return $this->db()->delete($table, $criteria, $types);
+            return (int)$this->db()->delete($table, $criteria, $types);
         } catch (Exception $e) {
             throw $this->convertException($e);
         }
     }
 
-    /**
-     * @param        $table
-     * @param array  $data
-     * @param array  $cast
-     * @param array  $conflict
-     * @param array  $do
-     * @param string $doWhere
-     * @return bool|Result
-     */
-    public function upsert($table, array $data, array $cast = [], array $conflict = [], array $do = [], string $doWhere = ''): bool|Result
+    public function upsertBatched(int $batchSize, string $table, array $data, array $cast = [], array $conflict = [], array $do = [], string $doWhere = ''): void
+    {
+        $batchSize = max(100, $batchSize);
+        $chunks = array_chunk($data, $batchSize);
+
+        foreach ($chunks as $chunk) {
+            $this->upsert($table, $chunk, $cast, $conflict, $do, $doWhere);
+        }
+    }
+
+    public function upsert(string $table, array $data, array $cast = [], array $conflict = [], array $do = [], string $doWhere = ''): bool|Result
     {
         if (empty($data)) {
             return false;
