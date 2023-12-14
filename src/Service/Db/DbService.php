@@ -616,7 +616,7 @@ final class DbService
                         if ($value == 'NULL') {
                             $sqlValue .= ", NULL";
                         } elseif ($castType === 'int[]') {
-                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => (int)$item, $value)) . ']';
+                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => (int)$item, $value)) . ']::integer[]';
                         } elseif ($castType != 'mixed') {
                             $sqlValue .= ",$castTypeStr ".$conn->quote($value, PDO::PARAM_STR);
                         } elseif (is_null($value)) {
