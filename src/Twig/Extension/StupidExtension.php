@@ -152,7 +152,7 @@ class StupidExtension extends AbstractExtension
         return implode("\n", $lines);
     }
 
-    public function putToStorage(string $var, mixed $value)
+    public function putToStorage(string $var, mixed $value): void
     {
         $this->storage[$var] = $value;
     }

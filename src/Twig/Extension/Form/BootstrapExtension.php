@@ -138,7 +138,7 @@ class BootstrapExtension extends AbstractExtension
      *
      * @param string $colSize Column size (xs, sm, md or lg)
      */
-    public function setColSize(string $colSize)
+    public function setColSize(string $colSize): void
     {
         $this->colSize = $colSize;
     }
@@ -158,7 +158,7 @@ class BootstrapExtension extends AbstractExtension
      *
      * @param integer $widgetCol Number of columns.
      */
-    public function setWidgetCol(int $widgetCol)
+    public function setWidgetCol(int $widgetCol): void
     {
         $this->widgetCol = $widgetCol;
     }
@@ -178,7 +178,7 @@ class BootstrapExtension extends AbstractExtension
      *
      * @param integer $labelCol Number of columns.
      */
-    public function setLabelCol(int $labelCol)
+    public function setLabelCol(int $labelCol): void
     {
         $this->labelCol = $labelCol;
     }
@@ -193,7 +193,7 @@ class BootstrapExtension extends AbstractExtension
         return $this->labelCol;
     }
 
-    public function setSimpleCol(int $simpleCol)
+    public function setSimpleCol(int $simpleCol): void
     {
         $this->simpleCol = $simpleCol;
     }

@@ -24,7 +24,7 @@ class CurlMultiService
         //create the multiple cURL handle
         $mh = curl_multi_init();
 
-        $running = null;
+        $running = 0;
 
         # Setup all curl handles
         # Loop through each created curlNode object.

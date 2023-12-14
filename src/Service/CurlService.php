@@ -69,7 +69,7 @@ final class CurlService
         $this->setOpt(CURLOPT_INTERFACE, $selectedIp);
     }
 
-    public function rotateProxyIps()
+    public function rotateProxyIps(): void
     {
         if (!self::$rotateProxyIps || count(self::$proxyIps) < 2) {
             return;
@@ -97,7 +97,7 @@ final class CurlService
         return $this;
     }
 
-    public function getIp()
+    public function getIp(): ?string
     {
         return self::$previousIp;
     }
@@ -122,12 +122,12 @@ final class CurlService
         return $this->_data['code'];
     }
 
-    public function disableCookie($flag)
+    public function disableCookie($flag): void
     {
         $this->_disableCookie = (bool)$flag;
     }
 
-    public function setAutodetectEncoding($flag)
+    public function setAutodetectEncoding($flag): static
     {
         $this->_autodetectEncoding = (bool)$flag;
         $this->_encoding = null;
@@ -146,7 +146,7 @@ final class CurlService
         }
     }
 
-    public function setEncoding($encoding)
+    public function setEncoding($encoding): void
     {
         if (strtolower($encoding) == 'utf-8') {
             $encoding = null;
@@ -156,7 +156,7 @@ final class CurlService
         $this->_autodetectEncoding = false;
     }
 
-    public function init()
+    public function init(): void
     {
         $this->setOpt(CURLOPT_HEADER, 1);
         $this->setOpt(CURLOPT_RETURNTRANSFER, 1);
@@ -166,7 +166,7 @@ final class CurlService
         $this->rotateUserAgent();
     }
 
-    public function rotateUserAgent()
+    public function rotateUserAgent(): void
     {
         if (!$this->rotateUserAgent) {
             $this->setOpt(CURLOPT_USERAGENT, $this->userAgents[0]);
@@ -177,7 +177,7 @@ final class CurlService
     }
 
 
-    public function close()
+    public function close(): void
     {
         curl_close($this->getHandler());
     }
@@ -189,7 +189,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    public function put($url, array $data = [], $encoding = null)
+    public function put($url, array $data = [], $encoding = null): static
     {
         $this->_lastRedirectDestination = '';
         $this->setOpt(CURLOPT_CUSTOMREQUEST, "PUT");
@@ -204,7 +204,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    public function post($url, array $data = [], $encoding = null)
+    public function post($url, array $data = [], $encoding = null): static
     {
         $this->_lastRedirectDestination = '';
         $this->setOpt(CURLOPT_POST, true);
@@ -218,7 +218,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    public function get($url, $encoding = null)
+    public function get($url, $encoding = null): static
     {
         $this->_lastRedirectDestination = '';
         return $this->_load($url, $encoding);
@@ -231,7 +231,7 @@ final class CurlService
      *
      * @return CurlService
      */
-    protected function _load($url, $encoding = null, int $try = 1)
+    protected function _load($url, $encoding = null, int $try = 1): static
     {
         $this->setOpt(CURLOPT_URL, $url);
 
@@ -274,7 +274,7 @@ final class CurlService
      *
      * @return string
      */
-    public function getLastRedirectDestination()
+    public function getLastRedirectDestination(): string
     {
         return $this->_lastRedirectDestination;
     }

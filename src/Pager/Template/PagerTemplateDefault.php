@@ -143,7 +143,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
     }
 
 
-    private function calculateStartAndEndPage()
+    private function calculateStartAndEndPage(): void
     {
         $startPage = $this->page - $this->proximity;
         $endPage = $this->page + $this->proximity;
@@ -164,7 +164,7 @@ class PagerTemplateDefault extends AbstractPagerTemplate
         $this->calculateMobileStartAndEndPage();
     }
 
-    private function calculateMobileStartAndEndPage()
+    private function calculateMobileStartAndEndPage(): void
     {
         $startPage = $this->page - $this->proximityOnMobile;
         $endPage = $this->page + $this->proximityOnMobile;
