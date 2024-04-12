@@ -28,7 +28,7 @@ class TabExtension extends AbstractTypeExtension
         ]);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $namespace = $options['tab']['namespace'];
         if (null === $namespace) {
@@ -61,7 +61,7 @@ class TabExtension extends AbstractTypeExtension
         }
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $root = $this->getRootView($view);
         if (isset($root->vars['tabs'])) {

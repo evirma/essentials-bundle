@@ -2,7 +2,7 @@
 
 namespace Evirma\Bundle\EssentialsBundle\Service;
 
-final class CurlService
+class CurlService
 {
     const DISABLE_COOKIE = 'curl_disable_cookie';
     const AUTODETECT_ENCODING = 'curl_autodetect_encoding';
