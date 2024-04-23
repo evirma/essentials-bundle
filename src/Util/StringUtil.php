@@ -212,6 +212,7 @@ final class StringUtil
             $cnt = $cnt + $sect;
         }
 
+        /** @var int<0, max> $cnt */
         unset($pathArray[$cnt]);
 
         $result = '';

@@ -13,7 +13,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class MemcacheService
 {
-    const MC_DEFAULT = '-1~1982~06~01';
+    const string MC_DEFAULT = '-1~1982~06~01';
 
     public static array $prefetchCacheData = [];
     public static bool $addToPrefetchOnSet = false;

@@ -9,9 +9,9 @@ namespace Evirma\Bundle\EssentialsBundle\Pager\Adapter;
  *
  * Best used when you need to do a custom paging solution and don't want to implement a full adapter for a one-off use case.
  */
-class PagerFixedAdapter implements PagerAdapterInterface
+readonly class PagerFixedAdapter implements PagerAdapterInterface
 {
-    public function __construct(private readonly int $count, private readonly iterable $results)
+    public function __construct(private int $count, private iterable $results)
     {
     }
 

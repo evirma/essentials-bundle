@@ -4,21 +4,21 @@ namespace Evirma\Bundle\EssentialsBundle\Service;
 
 class CurlService
 {
-    const DISABLE_COOKIE = 'curl_disable_cookie';
-    const AUTODETECT_ENCODING = 'curl_autodetect_encoding';
-    const ROTATE_IPS = 'rorate_ips';
-    const ROTATE_PROXY_IPS = 'rorate_proxy_ips';
+    const string DISABLE_COOKIE = 'curl_disable_cookie';
+    const string AUTODETECT_ENCODING = 'curl_autodetect_encoding';
+    const string ROTATE_IPS = 'rorate_ips';
+    const string ROTATE_PROXY_IPS = 'rorate_proxy_ips';
 
     private array $_cookieArr = [];
-    private $_cookie = null;
-    private $_followLocation = true;
-    private $_encoding = null;
-    private $_autodetectEncoding = false;
-    private $_disableCookie = false;
-    private $_handler;
-    private $_headers;
-    private $_data = array('code' => 200, 'header' => null, 'body' => null);
-    private $_lastRedirectDestination = '';
+    private ?string $_cookie = null;
+    private ?bool $_followLocation = true;
+    private ?string $_encoding = null;
+    private ?bool $_autodetectEncoding = false;
+    private ?bool $_disableCookie = false;
+    private ?\CurlHandle $_handler = null;
+    private array $_headers = [];
+    private array $_data = ['code' => 200, 'header' => null, 'body' => null];
+    private string $_lastRedirectDestination = '';
 
     private static ?string $previousIp = null;
     private static ?string $previousProxyIp = null;
@@ -271,15 +271,13 @@ class CurlService
 
     /**
      * Получить адрес куда ведет редирект
-     *
-     * @return string
      */
     public function getLastRedirectDestination(): string
     {
         return $this->_lastRedirectDestination;
     }
 
-    public function setUrl($url)
+    public function setUrl($url): void
     {
         $this->setOpt(CURLOPT_URL, $url);
     }
@@ -289,7 +287,7 @@ class CurlService
      * @param null $encoding
      * @return CurlService
      */
-    public function parseResult($contents, $encoding = null)
+    public function parseResult($contents, $encoding = null): CurlService|static
     {
         $contents = trim($contents);
         if (false !== stripos($contents, "HTTP/1.0 200 Connection established\r\n\r\n")) {
@@ -411,7 +409,7 @@ class CurlService
         return $this;
     }
 
-    public function getHandler()
+    public function getHandler(): \CurlHandle
     {
         if (!$this->_handler) {
             $this->_handler = curl_init();
@@ -435,7 +433,7 @@ class CurlService
         return $this;
     }
 
-    public function bodyDecode($encoding)
+    public function bodyDecode($encoding): static
     {
         if ($encoding && strtolower($encoding) != 'utf-8') {
             $this->_data['body'] = iconv($encoding, 'utf-8', $this->_data['body']);
@@ -453,10 +451,10 @@ class CurlService
         return $this;
     }
 
-    public function autodetectEncoding()
+    public function autodetectEncoding(): string
     {
         if (!$this->_autodetectEncoding) {
-            return null;
+            return '';
         }
 
         $bodyCharset = null;
@@ -484,17 +482,17 @@ class CurlService
         } else if ($headerCharset) {
             $result = $headerCharset;
         } else {
-            $result = null;
+            $result = '';
         }
 
         $assoc = array(
             '#^1251$#'=> 'windows-1251'
         );
 
-        return preg_replace(array_keys($assoc), array_values($assoc), $result);
+        return (string)preg_replace(array_keys($assoc), array_values($assoc), $result);
     }
 
-    function parseCookie()
+    function parseCookie(): ?string
     {
         if ($this->_disableCookie !== false) {
             return '';
@@ -531,7 +529,7 @@ class CurlService
         return $this->_cookie;
     }
 
-    public function cookieToString()
+    public function cookieToString(): string
     {
         $cookie = "";
         foreach ($this->_cookieArr as $key=>$value)
@@ -542,7 +540,7 @@ class CurlService
         return $cookie;
     }
 
-    public function setCookie($name, $val)
+    public function setCookie($name, $val): static
     {
         if (empty($val)) {
             unset($this->_cookieArr[$name]);

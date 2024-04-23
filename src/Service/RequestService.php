@@ -8,10 +8,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-
-class RequestService
+readonly class RequestService
 {
-    public function __construct(private readonly RequestStack $requestStack, private readonly RouterInterface $router)
+    public function __construct(private RequestStack $requestStack, private RouterInterface $router)
     {
     }
 

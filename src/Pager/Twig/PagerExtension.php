@@ -7,9 +7,6 @@ use Evirma\Bundle\EssentialsBundle\Pager\Pager;
 use Evirma\Bundle\EssentialsBundle\Pager\RouteGenerator\RouterRouteGenerator;
 use Evirma\Bundle\EssentialsBundle\Pager\Template\PagerTemplateBem;
 use Evirma\Bundle\EssentialsBundle\Pager\Template\PagerTemplateDefault;
-use InvalidArgumentException;
-use JetBrains\PhpStorm\Pure;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
@@ -25,19 +22,13 @@ class PagerExtension extends AbstractExtension
     {
         $this->requestStack = $requestStack;
         $this->router = $router;
-        if ($requestStack->getCurrentRequest()) {
-            $locale = Locale::tryFrom($requestStack->getCurrentRequest()->getLocale());
-            $this->locale =  $locale ?: Locale::RU;
-        } else {
-            $this->locale = Locale::EN;
-        }
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('super_pager', [$this, 'renderPager'], ['is_safe' => ['html']]),
-            new TwigFunction('super_pager_page_url', [$this, 'getPageUrl']),
+            new TwigFunction('super_pager', $this->renderPager(...), ['is_safe' => ['html']]),
+            new TwigFunction('super_pager_page_url', $this->getPageUrl(...)),
         ];
     }
 
@@ -56,7 +47,7 @@ class PagerExtension extends AbstractExtension
     public function getPageUrl(Pager $pager, int $page, array $options = []): string
     {
         if ($page < 0 || $page > $pager->getPages()) {
-            throw new InvalidArgumentException("Page '$page' is out of bounds");
+            throw new \InvalidArgumentException("Page '$page' is out of bounds");
         }
 
         $routeGenerator = $this->createRouteGenerator($options);
@@ -79,7 +70,7 @@ class PagerExtension extends AbstractExtension
             $request = $this->requestStack->getCurrentRequest();
 
             if (null !== $this->requestStack->getParentRequest()) {
-                throw new RuntimeException('The route generator can not guess the route when used in a sub-request, pass the "route" option to use this generator.');
+                throw new \RuntimeException('The route generator can not guess the route when used in a sub-request, pass the "route" option to use this generator.');
             }
 
             $options['route'] = $request->attributes->get('_route');
@@ -93,10 +84,27 @@ class PagerExtension extends AbstractExtension
         return new RouterRouteGenerator($this->router, $options);
     }
 
-    #[Pure] private function getPagerTemplateByName(string $name, ?Locale $locale = null): PagerTemplateDefault|PagerTemplateBem
+    private function getLocale(): Locale
+    {
+        if (isset($this->locale)) {
+            return $this->locale;
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request) {
+            $locale = Locale::tryFrom($request->getLocale());
+            $this->locale =  $locale ?: Locale::RU;
+        } else {
+            $this->locale = Locale::EN;
+        }
+
+        return $this->locale;
+    }
+
+    private function getPagerTemplateByName(string $name, ?Locale $locale = null): PagerTemplateDefault|PagerTemplateBem
     {
         if (!$locale) {
-            $locale = $this->locale;
+            $locale = $this->getLocale();
         }
 
         return match ($name) {

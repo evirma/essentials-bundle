@@ -177,13 +177,14 @@ final class DbService
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
     {
+        $result = [];
         if ($data = $this->fetchAllAssociative($sql, $params, $types)) {
-            foreach ($data as &$item) {
-                $item = $this->createObject($object, $item);
+            foreach ($data as $item) {
+                $result[] = $this->createObject($object, $item);
             }
         }
 
-        return $data;
+        return $result;
     }
 
     /**
@@ -487,10 +488,10 @@ final class DbService
      * @param array  $data            An associative array containing column-value pairs.
      * @param array  $identifier      The update criteria. An associative array containing column-value pairs.
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
-     * @return int The number of affected rows.
+     * @return int|string The number of affected rows.
      * @throws SqlDriverException
      */
-    public function update(string $tableExpression, array $data, array $identifier, array $types = []): int
+    public function update(string $tableExpression, array $data, array $identifier, array $types = []): int|string
     {
         try {
             return $this->db()->update($tableExpression, $data, $identifier, $types);

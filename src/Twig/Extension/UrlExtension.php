@@ -17,8 +17,8 @@ class UrlExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('url_save_get', [$this, 'urlSaveGetFilter'], ['is_safe' => ['all']]),
-            new TwigFunction('url_domain', [$this, 'urlDomainFilter'], ['is_safe' => ['all']]),
+            new TwigFunction('url_save_get', $this->urlSaveGetFilter(...), ['is_safe' => ['all']]),
+            new TwigFunction('url_domain', $this->urlDomainFilter(...), ['is_safe' => ['all']]),
         ];
     }
 

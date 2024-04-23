@@ -18,14 +18,14 @@ class IconExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('parse_icons', [$this, 'parseIconsFilter'], ['pre_escape' => 'html', 'is_safe' => array('html')])
+            new TwigFilter('parse_icons', $this->parseIconsFilter(...), ['pre_escape' => 'html', 'is_safe' => array('html')])
         ];
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('icon', [$this, 'getIconFilter'], ['pre_escape' => 'html', 'is_safe' => array('html')])
+            new TwigFunction('icon', $this->getIconFilter(...), ['pre_escape' => 'html', 'is_safe' => array('html')])
         ];
     }
 

@@ -32,7 +32,7 @@ class SwitchNode extends Node
      *
      * @param Compiler $compiler A Twig_Compiler instance
      */
-    public function compile(Compiler $compiler)
+    public function compile(Compiler $compiler): void
     {
         $compiler
             ->addDebugInfo($this)

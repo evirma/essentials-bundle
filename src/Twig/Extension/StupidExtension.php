@@ -22,11 +22,11 @@ class StupidExtension extends AbstractExtension
     {
         return [
             # Strings
-            new TwigFilter('lcfirst', [StringUtil::class, 'lcfirst']),
-            new TwigFilter('ucfirst', [StringUtil::class, 'ucfirst']),
-            new TwigFilter('ucwords', [StringUtil::class, 'ucwords']),
+            new TwigFilter('lcfirst', StringUtil::lcfirst(...)),
+            new TwigFilter('ucfirst', StringUtil::ucfirst(...)),
+            new TwigFilter('ucwords', StringUtil::ucwords(...)),
 
-            new TwigFilter('humansize', [StringUtil::class, 'humanSize']),
+            new TwigFilter('humansize', StringUtil::humanSize(...)),
 
             new TwigFilter('ltrim', ['ltrim']),
             new TwigFilter('rtrim', ['rtrim']),
@@ -35,33 +35,33 @@ class StupidExtension extends AbstractExtension
             new TwigFilter('ends_with', [StringUtil::class, 'endsWith']),
             new TwigFilter('starts_with', [StringUtil::class, 'startsWith']),
 
-            new TwigFilter('truncate', [StringUtil::class, 'safeTruncate']),
+            new TwigFilter('truncate', StringUtil::safeTruncate(...)),
             new TwigFilter('truncate_html', [StringUtil::class, 'safeTruncateHtml']),
 
             # Arrays
-            new TwigFilter('fieldName', [$this, 'fieldNameFilter']),
+            new TwigFilter('fieldName', $this->fieldNameFilter(...)),
             new TwigFilter('array_unique', 'array_unique'),
 
             # Hash and decodes
-            new TwigFilter('sha1',          [$this, 'sha1']),
-            new TwigFilter('md5',           [$this, 'md5']),
-            new TwigFilter('base64_encode', [$this, 'base64Encode']),
-            new TwigFilter('base64_decode', [$this, 'base64Decode']),
-            new TwigFilter('yaml_encode',   [$this, 'yamlEncode']),
-            new TwigFilter('yaml_decode',   [$this, 'yamlDecode']),
-            new TwigFilter('json_decode', [$this, 'jsonDecode']),
-            new TwigFilter('json_encode', [$this, 'jsonEncode']),
+            new TwigFilter('sha1', $this->sha1(...)),
+            new TwigFilter('md5', $this->md5(...)),
+            new TwigFilter('base64_encode', $this->base64Encode(...)),
+            new TwigFilter('base64_decode', $this->base64Decode(...)),
+            new TwigFilter('yaml_encode', $this->yamlEncode(...)),
+            new TwigFilter('yaml_decode', $this->yamlDecode(...)),
+            new TwigFilter('json_decode', $this->jsonDecode(...)),
+            new TwigFilter('json_encode', $this->jsonEncode(...)),
 
             # Pretty
-            new TwigFilter('file_pretty_size', array($this, 'filePrettySizeFilter')),
-            new TwigFilter('file_pretty_image_size', array($this, 'filePrettyImageSizeFilter')),
+            new TwigFilter('file_pretty_size', $this->filePrettySizeFilter(...)),
+            new TwigFilter('file_pretty_image_size', $this->filePrettyImageSizeFilter(...)),
 
             // Casts
-            new TwigFilter('string', [$this, 'stringFilter']),
-            new TwigFilter('int',    [$this, 'intFilter']),
-            new TwigFilter('bool',   [$this, 'boolFilter']),
-            new TwigFilter('float',  [$this, 'floatFilter']),
-            new TwigFilter('array',  [$this, 'arrayFilter']),
+            new TwigFilter('string', $this->stringFilter(...)),
+            new TwigFilter('int', $this->intFilter(...)),
+            new TwigFilter('bool', $this->boolFilter(...)),
+            new TwigFilter('float', $this->floatFilter(...)),
+            new TwigFilter('array', $this->arrayFilter(...)),
 
             // System
             new TwigFilter('basename', 'basename'),
@@ -73,14 +73,11 @@ class StupidExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('markdown', [$this, 'markdown'], ['is_safe' => ['all']]),
-            new TwigFunction('typo',     [$this, 'typo']),
-
             # storage
-            new TwigFunction('put_to_storage',   [$this, 'putToStorage'], ['is_safe' => ['all']]),
-            new TwigFunction('get_from_storage', [$this, 'getFromStorage'], ['is_safe' => ['all']]),
+            new TwigFunction('put_to_storage', $this->putToStorage(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_from_storage', $this->getFromStorage(...), ['is_safe' => ['all']]),
 
-            new TwigFunction('spacer',           [$this, 'spacer'], ['is_safe' => ['all']]),
+            new TwigFunction('spacer', $this->spacer(...), ['is_safe' => ['all']]),
 
             # System
             new TwigFunction('array_key_exists', 'array_key_exists'),
@@ -89,8 +86,8 @@ class StupidExtension extends AbstractExtension
             new TwigFunction('range',            'range'),
             new TwigFunction('pathinfo',         'pathinfo'),
 
-            new TwigFunction('is_ajax_request', [$this, 'isAjaxRequest']),
-            new TwigFunction('array_intersect', [$this, 'arrayIntersect']),
+            new TwigFunction('is_ajax_request', $this->isAjaxRequest(...)),
+            new TwigFunction('array_intersect', $this->arrayIntersect(...)),
 
             new TwigFunction('static_var', function ($name) {
                 list($class, $property) = explode('::', $name, 2);
@@ -101,21 +98,21 @@ class StupidExtension extends AbstractExtension
             }),
 
             # Hash and decodes
-            new TwigFunction('sha1',          [$this, 'sha1']),
-            new TwigFunction('md5',           [$this, 'md5']),
-            new TwigFunction('base64_encode', [$this, 'base64Encode']),
-            new TwigFunction('base64_decode', [$this, 'base64Decode']),
-            new TwigFunction('yaml_encode',   [$this, 'yamlEncode']),
-            new TwigFunction('yaml_decode',   [$this, 'yamlDecode']),
-            new TwigFunction('json_decode',   [$this, 'jsonDecode']),
-            new TwigFunction('json_encode',   [$this, 'jsonEncode']),
+            new TwigFunction('sha1', $this->sha1(...)),
+            new TwigFunction('md5', $this->md5(...)),
+            new TwigFunction('base64_encode', $this->base64Encode(...)),
+            new TwigFunction('base64_decode', $this->base64Decode(...)),
+            new TwigFunction('yaml_encode', $this->yamlEncode(...)),
+            new TwigFunction('yaml_decode', $this->yamlDecode(...)),
+            new TwigFunction('json_decode', $this->jsonDecode(...)),
+            new TwigFunction('json_encode', $this->jsonEncode(...)),
 
             // Casts
-            new TwigFunction('string', [$this, 'stringFilter']),
-            new TwigFunction('int',    [$this, 'intFilter']),
-            new TwigFunction('bool',   [$this, 'boolFilter']),
-            new TwigFunction('float',  [$this, 'floatFilter']),
-            new TwigFunction('array',  [$this, 'arrayFilter']),
+            new TwigFunction('string', $this->stringFilter(...)),
+            new TwigFunction('int', $this->intFilter(...)),
+            new TwigFunction('bool', $this->boolFilter(...)),
+            new TwigFunction('float', $this->floatFilter(...)),
+            new TwigFunction('array', $this->arrayFilter(...)),
         ];
     }
 

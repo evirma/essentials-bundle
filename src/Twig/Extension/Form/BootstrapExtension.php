@@ -20,19 +20,19 @@ class BootstrapExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('bootstrap_show_global_errors', array($this, 'showGlobalErrors')),
-            new TwigFunction('bootstrap_set_style', array($this, 'setStyle')),
-            new TwigFunction('bootstrap_get_style', array($this, 'getStyle')),
-            new TwigFunction('bootstrap_set_col_size', array($this, 'setColSize')),
-            new TwigFunction('bootstrap_get_col_size', array($this, 'getColSize')),
-            new TwigFunction('bootstrap_set_widget_col', array($this, 'setWidgetCol')),
-            new TwigFunction('bootstrap_get_widget_col', array($this, 'getWidgetCol')),
-            new TwigFunction('bootstrap_set_label_col', array($this, 'setLabelCol')),
-            new TwigFunction('bootstrap_get_label_col', array($this, 'getLabelCol')),
-            new TwigFunction('bootstrap_set_simple_col', array($this, 'setSimpleCol')),
-            new TwigFunction('bootstrap_get_simple_col', array($this, 'getSimpleCol')),
-            new TwigFunction('bootstrap_backup_form_settings', array($this, 'backupFormSettings')),
-            new TwigFunction('bootstrap_restore_form_settings', array($this, 'restoreFormSettings')),
+            new TwigFunction('bootstrap_show_global_errors', $this->showGlobalErrors(...)),
+            new TwigFunction('bootstrap_set_style', $this->setStyle(...)),
+            new TwigFunction('bootstrap_get_style', $this->getStyle(...)),
+            new TwigFunction('bootstrap_set_col_size', $this->setColSize(...)),
+            new TwigFunction('bootstrap_get_col_size', $this->getColSize(...)),
+            new TwigFunction('bootstrap_set_widget_col', $this->setWidgetCol(...)),
+            new TwigFunction('bootstrap_get_widget_col', $this->getWidgetCol(...)),
+            new TwigFunction('bootstrap_set_label_col', $this->setLabelCol(...)),
+            new TwigFunction('bootstrap_get_label_col', $this->getLabelCol(...)),
+            new TwigFunction('bootstrap_set_simple_col', $this->setSimpleCol(...)),
+            new TwigFunction('bootstrap_get_simple_col', $this->getSimpleCol(...)),
+            new TwigFunction('bootstrap_backup_form_settings', $this->backupFormSettings(...)),
+            new TwigFunction('bootstrap_restore_form_settings', $this->restoreFormSettings(...)),
             new TwigFunction('checkbox_row',null, array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')),
             new TwigFunction('radio_row', null, array('is_safe' => array('html'), 'node_class' => 'Symfony\Bridge\Twig\Node\SearchAndRenderBlockNode')),
             new TwigFunction(
@@ -42,7 +42,7 @@ class BootstrapExtension extends AbstractExtension
             ),
             new TwigFunction(
                 'form_control_static',
-                array($this, 'formControlStaticFunction'),
+                $this->formControlStaticFunction(...),
                 array('is_safe' => array('html'))
             ),
         ];

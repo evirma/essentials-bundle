@@ -12,9 +12,9 @@ class DateExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('date_html_format', [$this, 'dateHtmlFormatFilter'], ['is_safe' => ['all']]),
-            new TwigFilter('date_html_pretty', [$this, 'dateHtmlPrettyFilter'], ['is_safe' => ['all']]),
-            new TwigFilter('diff_pretty_time', [$this, 'diffPrettyTimeFilter']),
+            new TwigFilter('date_html_format', $this->dateHtmlFormatFilter(...), ['is_safe' => ['all']]),
+            new TwigFilter('date_html_pretty', $this->dateHtmlPrettyFilter(...), ['is_safe' => ['all']]),
+            new TwigFilter('diff_pretty_time', $this->diffPrettyTimeFilter(...)),
         ];
     }
 

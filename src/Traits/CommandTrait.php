@@ -7,6 +7,7 @@ namespace Evirma\Bundle\EssentialsBundle\Traits;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,7 +23,7 @@ trait CommandTrait
 
         try {
             $help->run($input, $output);
-        } catch (\Exception $e) {
+        } catch (\Exception|ExceptionInterface $e) {
             if (method_exists($this, 'getLogger')) {
                 $this->getLogger()->error("Help command failed: ".$e->getMessage());
             }

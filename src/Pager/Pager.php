@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace Evirma\Bundle\EssentialsBundle\Pager;
 
 use Evirma\Bundle\EssentialsBundle\Pager\Adapter\PagerAdapterInterface;
-use ArrayIterator;
-use Countable;
-use Iterator;
-use IteratorAggregate;
-use JetBrains\PhpStorm\Pure;
-use JsonSerializable;
-use LogicException;
-use Traversable;
 
-class Pager implements Countable, IteratorAggregate, JsonSerializable
+/**
+ * @implements \IteratorAggregate<int, mixed>
+ */
+class Pager implements \Countable, \IteratorAggregate, \JsonSerializable
 {
     private PagerAdapterInterface $adapter;
     private int $perPage = 10;
@@ -100,7 +95,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable
     public function getPreviousPage(): int
     {
         if (!$this->hasPreviousPage()) {
-            throw new LogicException('There is no previous page.');
+            throw new \LogicException('There is no previous page.');
         }
 
         return $this->page - 1;
@@ -114,32 +109,32 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable
     public function getNextPage(): int
     {
         if (!$this->hasNextPage()) {
-            throw new LogicException('There is no next page.');
+            throw new \LogicException('There is no next page.');
         }
 
         return $this->page + 1;
     }
 
-    public function getIterator(): ArrayIterator|Iterator
+    public function getIterator(): \ArrayIterator|\Iterator
     {
         $results = $this->getItems();
 
-        if ($results instanceof Iterator) {
+        if ($results instanceof \Iterator) {
             return $results;
         }
 
-        if ($results instanceof IteratorAggregate) {
+        if ($results instanceof \IteratorAggregate) {
             return $results->getIterator();
         }
 
-        return new ArrayIterator((array)$results);
+        return new \ArrayIterator((array)$results);
     }
 
     public function jsonSerialize(): ?iterable
     {
         $results = $this->getItems();
 
-        if ($results instanceof Traversable) {
+        if ($results instanceof \Traversable) {
             return iterator_to_array($results);
         }
 
@@ -168,7 +163,7 @@ class Pager implements Countable, IteratorAggregate, JsonSerializable
      * @deprecated
      * @return int
      */
-    #[Pure] public function getCurrentPage(): int
+    public function getCurrentPage(): int
     {
         return $this->getPage();
     }
