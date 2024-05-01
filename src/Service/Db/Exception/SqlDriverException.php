@@ -16,6 +16,8 @@ class SqlDriverException extends RuntimeException
 {
     private Throwable $driverException;
 
+    private array $extra = [];
+
     public function __construct(string $message, Throwable $exception)
     {
         $this->driverException = $exception;
@@ -63,4 +65,13 @@ class SqlDriverException extends RuntimeException
         return null;
     }
 
+    public function getExtra(): array
+    {
+        return $this->extra;
+    }
+
+    public function setExtra(array $extra): void
+    {
+        $this->extra = $extra;
+    }
 }

@@ -103,6 +103,14 @@ final class DbService
         $message = preg_replace('#with params\s*\[.*?]#usi', 'with params [{{PARAMS}}]', $message);
 
         $exception = new SqlDriverException($message, $e);
+        $exception->setExtra([
+            'message' => $message,
+            'connection' => $this->connectionName ?: 'default',
+            'sql' => $sql,
+            'params' => $params,
+            'types' => $types,
+        ]);
+
         $this->logger?->error('SQL Execute Error', [
             'message' => $message,
             'connection' => $this->connectionName ?: 'default',
