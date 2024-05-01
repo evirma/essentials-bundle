@@ -168,7 +168,7 @@ final class DbService
         try {
             return $this->db()->executeQuery($sql, $params, $types);
         } catch (Exception $e) {
-            throw $this->convertException($e);
+            throw $this->convertException($e, $sql, $params, $types);
         }
     }
 
