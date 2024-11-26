@@ -25,6 +25,8 @@ final class DbService
     /** @var array<string, DbService> */
     private array $servers = [];
 
+    public static array $stat = [];
+
     private ?Connection $db = null;
 
     public function __construct(private readonly ManagerRegistry $manager, private ?LoggerInterface $logger = null, private readonly string $connectionName = 'default')
@@ -61,6 +63,7 @@ final class DbService
     public function beginTransaction(): void
     {
         try {
+            self::statInc('beginTransaction');
             $this->db()->beginTransaction();
         } catch (Exception $e) {
             $this->convertException($e);
@@ -90,6 +93,7 @@ final class DbService
     public function commit(): void
     {
         try {
+            self::statInc('commit');
             $this->db()->commit();
         } catch (Exception $e) {
             throw $this->convertException($e);
@@ -126,6 +130,7 @@ final class DbService
     public function rollBack(): void
     {
         try {
+            self::statInc('rollBack');
             $this->db()->rollBack();
         } catch (Exception $e) {
             throw $this->convertException($e);
@@ -147,6 +152,9 @@ final class DbService
         $sql = $this->executeQuery($sql, $params, $types);
 
         try {
+            self::statInc('query');
+            self::statInc('query__fetchAssociative');
+
             return $sql->fetchAssociative();
         } catch (Exception $e) {
             throw $this->convertException($e, $sql, $params, $types);
@@ -185,6 +193,9 @@ final class DbService
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchObjectAll');
+
         $result = [];
         if ($data = $this->fetchAllAssociative($sql, $params, $types)) {
             foreach ($data as $item) {
@@ -206,6 +217,9 @@ final class DbService
      */
     public function fetchAllAssociative(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchAllAssociative');
+
         $sql = $this->executeQuery($sql, $params, $types);
         try {
             return $sql->fetchAllAssociative();
@@ -235,6 +249,9 @@ final class DbService
      */
     public function fetchObject(string $object, string $sql, array $params = [], array $types = []): mixed
     {
+        self::statInc('query');
+        self::statInc('query__fetchObject');
+
         try {
             if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
                 $item = $this->createObject($object, $item);
@@ -259,6 +276,9 @@ final class DbService
      */
     public function fetchOne(string $sql, array $params = [], array $types = []): mixed
     {
+        self::statInc('query');
+        self::statInc('query__fetchOne');
+
         if (!$sql = $this->executeQuery($sql, $params, $types)) {
             return false;
         }
@@ -281,6 +301,25 @@ final class DbService
      */
     public function fetchFirstColumn(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchFirstColumn');
+
+        if (preg_match("#COUNT\s*\(#usi", $sql)) {
+            self::statInc('match__count');
+        }
+
+        if (preg_match("#\s*INSERT\s*\(#usi", $sql)) {
+            self::statInc('match__insert');
+        }
+
+        if (preg_match("#\s*UPDATE\s*\(#usi", $sql)) {
+            self::statInc('match__update');
+        }
+
+        if (preg_match("#\s*DELETE\s*\(#usi", $sql)) {
+            self::statInc('match__delete');
+        }
+
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
@@ -302,6 +341,9 @@ final class DbService
      */
     public function fetchAllKeyValue(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchAllKeyValue');
+
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
@@ -324,6 +366,9 @@ final class DbService
      */
     public function fetchAllAssociativeIndexed(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchAllAssociativeIndexed');
+
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
@@ -345,6 +390,9 @@ final class DbService
      */
     public function iterateKeyValue(string $query, array $params = [], array $types = []): Traversable
     {
+        self::statInc('query');
+        self::statInc('query__iterateKeyValue');
+
         $stmt = $this->executeQuery($query, $params, $types);
 
         try {
@@ -367,6 +415,9 @@ final class DbService
      */
     public function iterateAssociativeIndexed(string $query, array $params = [], array $types = []): Traversable
     {
+        self::statInc('query');
+        self::statInc('query__iterateAssociativeIndexed');
+
         $stmt = $this->executeQuery($query, $params, $types);
 
         try {
@@ -389,6 +440,9 @@ final class DbService
      */
     public function fetchPairs(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchPairs');
+
         $sql = $this->executeQuery($sql, $params, $types);
         try {
             $data = $sql->fetchAllNumeric();
@@ -416,6 +470,9 @@ final class DbService
      */
     public function fetchUniqIds(string $sql, array $params = [], array $types = []): array
     {
+        self::statInc('query');
+        self::statInc('query__fetchUniqIds');
+
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
@@ -453,6 +510,9 @@ final class DbService
      */
     public function executeStatement(string $sql, array $params = [], array $types = []): int
     {
+        self::statInc('query');
+        self::statInc('query__executeStatement');
+
         try {
             return (int)$this->db()->executeStatement($sql, $params, $types);
         } catch (Exception $e) {
@@ -472,6 +532,9 @@ final class DbService
      */
     public function insert(string $tableExpression, array $data, array $types = []): int
     {
+        self::statInc('query');
+        self::statInc('insert');
+
         try {
             return (int)$this->db()->insert($tableExpression, $data, $types);
         } catch (Exception $e) {
@@ -481,6 +544,9 @@ final class DbService
 
     public function lastInsertId(?string $seqName = null): string
     {
+        self::statInc('query');
+        self::statInc('lastInsertId');
+
         try {
             return (string)$this->db()->lastInsertId($seqName);
         } catch (Exception $e) {
@@ -501,6 +567,9 @@ final class DbService
      */
     public function update(string $tableExpression, array $data, array $identifier, array $types = []): int|string
     {
+        self::statInc('query');
+        self::statInc('update');
+
         try {
             return $this->db()->update($tableExpression, $data, $identifier, $types);
         } catch (Exception $e) {
@@ -520,6 +589,9 @@ final class DbService
      */
     public function delete(string $table, array $criteria, array $types = []): int
     {
+        self::statInc('query');
+        self::statInc('delete');
+
         try {
             return (int)$this->db()->delete($table, $criteria, $types);
         } catch (Exception $e) {
@@ -542,6 +614,9 @@ final class DbService
         if (empty($data)) {
             return false;
         }
+
+        self::statInc('query');
+        self::statInc('upsert');
 
         $includeFields = array_keys($data[0]);
         $includeFieldsStr = implode(', ', $includeFields);
@@ -716,4 +791,16 @@ final class DbService
 
         return $this;
     }
+
+    private static function statInc(string $key): void
+    {
+        self::$stat[$key] = (self::$stat[$key] ?? 0) + 1;
+    }
+
+    public static function getStat(): array
+    {
+        return self::$stat;
+    }
+
+
 }
