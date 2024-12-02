@@ -134,7 +134,7 @@ class CurlService
         return $this;
     }
 
-    public function __construct(string $url = null, $type = 'GET')
+    public function __construct(?string $url = null, string $type = 'GET')
     {
         $this->init();
         if ($url) {

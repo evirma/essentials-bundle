@@ -27,7 +27,7 @@ trait TranslatorTrait
         return $this->translator->trans("$one|$two|$ten", ['%count%' => $count]);
     }
 
-    protected function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    protected function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }

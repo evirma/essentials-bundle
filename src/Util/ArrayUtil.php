@@ -90,7 +90,7 @@ final class ArrayUtil
         return true;
     }
 
-    public static function getColumn(array $array, string|int $columnName, string $cast = null): array
+    public static function getColumn(array $array, string|int $columnName, ?string $cast = null): array
     {
         $result = [];
         foreach ($array as $item) {

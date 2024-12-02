@@ -65,7 +65,7 @@ class DateUtil
         return $date;
     }
 
-    public static function fromString(string $time='now', DateTimeZone $timezone=null): DateTimeImmutable
+    public static function fromString(string $time='now', ?DateTimeZone $timezone=null): DateTimeImmutable
     {
         try {
             return new DateTimeImmutable($time, $timezone);
@@ -74,7 +74,7 @@ class DateUtil
         }
     }
 
-    public static function now(DateTimeZone $timezone=null): DateTimeImmutable
+    public static function now(?DateTimeZone $timezone=null): DateTimeImmutable
     {
         try {
             return new DateTimeImmutable('now', $timezone);

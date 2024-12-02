@@ -53,7 +53,7 @@ trait ValidatorTrait
      * @param string|GroupSequence|array<string|GroupSequence>|null $groups      The validation groups to validate. If none is given, "Default" is assumed
      * @return bool|string|null
      */
-    protected function isInvalidValue(mixed $value, array|Constraint $constraints = null, array|GroupSequence|string $groups = null): bool|string|null
+    protected function isInvalidValue(mixed $value, null|array|Constraint $constraints = null, null|array|GroupSequence|string $groups = null): bool|string|null
     {
         $violationList = $this->validateValue($value, $constraints, $groups);
         foreach ($violationList as $violation) break;
@@ -68,7 +68,7 @@ trait ValidatorTrait
      * @param string|GroupSequence|array<string|GroupSequence>|null $groups      The validation groups to validate. If none is given, "Default" is assumed
      * @return bool
      */
-    protected function isValidValue(mixed $value, array|Constraint $constraints = null, array|GroupSequence|string $groups = null): bool
+    protected function isValidValue(mixed $value, null|array|Constraint $constraints = null, null|array|GroupSequence|string $groups = null): bool
     {
         $violationList = $this->validateValue($value, $constraints, $groups);
         foreach ($violationList as $violation) break;

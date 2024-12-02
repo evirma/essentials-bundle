@@ -20,7 +20,7 @@ class PagerDoctrineORMAdapter implements PagerAdapterInterface
      * @param bool               $fetchJoinCollection Whether the query joins a collection (true by default)
      * @param bool|null          $useOutputWalkers    Flag indicating whether output walkers are used in the paginator
      */
-    public function __construct(Query|QueryBuilder $query, bool $fetchJoinCollection = true, bool $useOutputWalkers = null)
+    public function __construct(Query|QueryBuilder $query, bool $fetchJoinCollection = true, ?bool $useOutputWalkers = null)
     {
         $this->paginator = new Paginator($query, $fetchJoinCollection);
         $this->paginator->setUseOutputWalkers($useOutputWalkers);

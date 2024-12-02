@@ -32,7 +32,7 @@ class PagerExtension extends AbstractExtension
         ];
     }
 
-    public function renderPager(Pager $pager, string $viewName = null, array $options = []): string
+    public function renderPager(Pager $pager, ?string $viewName = null, array $options = []): string
     {
         $locale = $options['locale'] ?? null;
         return $this->getPagerTemplateByName($viewName, $locale)->render($pager, $this->createRouteGenerator($options), $options);

@@ -1,7 +1,5 @@
 <?php /** @noinspection PhpPureAttributeCanBeAddedInspection */
 
-/** @noinspection SpellCheckingInspection */
-
 declare(strict_types=1);
 
 namespace Evirma\Bundle\EssentialsBundle\Util;

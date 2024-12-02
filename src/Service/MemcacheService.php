@@ -151,7 +151,7 @@ class MemcacheService
         return self::$isCacheAllowed && $cached;
     }
 
-    public function set(string $key, mixed $value = null, int $ttl = null): bool
+    public function set(string $key, mixed $value = null, ?int $ttl = null): bool
     {
         if ($this->transaction) {
             $this->transactionCachedIds[$key] = $key;
@@ -166,7 +166,7 @@ class MemcacheService
         }
     }
 
-    public function setMultiple(array $values, int $ttl = null): bool
+    public function setMultiple(array $values, ?int $ttl = null): bool
     {
         try {
             return $this->getMemcachedAdapter()->setMulti($values, time() + $ttl);

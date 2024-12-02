@@ -194,7 +194,7 @@ trait CacheTrait
     /**
      * @param array<string, mixed> $values
      */
-    protected function setCacheMultiple(array $values, int $ttl = null): bool
+    protected function setCacheMultiple(array $values, ?int $ttl = null): bool
     {
         if (is_null($ttl)) {
             $ttl = $this->getCacheTtlMiddle();
@@ -221,7 +221,7 @@ trait CacheTrait
         return $this->getMemcache()->deleteMultiple($keys);
     }
 
-    protected function setCacheEncodedItem(string $cacheId, mixed $data, int $ttl = null): mixed
+    protected function setCacheEncodedItem(string $cacheId, mixed $data, ?int $ttl = null): mixed
     {
         if ($ttl === null) {
             $ttl = $this->getCacheTtlMiddle();

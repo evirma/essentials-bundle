@@ -19,9 +19,9 @@ class SwitchNode extends Node
     public function __construct(
         Node $value,
         Node $cases,
-        Node $default = null,
+        ?Node $default = null,
         $lineno = 0,
-        string $tag = null
+        ?string $tag = null
     )
     {
         parent::__construct(array('value' => $value, 'cases' => $cases, 'default' => $default), array(), $lineno, $tag);

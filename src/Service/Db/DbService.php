@@ -55,7 +55,7 @@ final class DbService
         return $this->manager;
     }
 
-    public function getEm(string $name = null): EntityManager
+    public function getEm(?string $name = null): EntityManager
     {
         return $this->manager->getManager($name);
     }
@@ -228,7 +228,7 @@ final class DbService
         }
     }
 
-    private function createObject(string $object, iterable $data = null): mixed
+    private function createObject(string $object, ?iterable $data = null): mixed
     {
         $result = new $object;
         foreach ($data as $k => $v) {
