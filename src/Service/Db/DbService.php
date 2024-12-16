@@ -702,7 +702,7 @@ final class DbService
                         } elseif ($castType === 'int[]') {
                             $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => (int)$item, $value)) . ']::integer[]';
                         } elseif ($castType === 'text[]') {
-                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => $conn->quote($value, PDO::PARAM_STR), $value)) . ']::text[]';
+                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => $conn->quote($item, PDO::PARAM_STR), $value)) . ']::text[]';
                         } elseif ($castType != 'mixed') {
                             $sqlValue .= ",$castTypeStr ".$conn->quote($value, PDO::PARAM_STR);
                         } elseif (is_null($value)) {
