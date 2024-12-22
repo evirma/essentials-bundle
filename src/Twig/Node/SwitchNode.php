@@ -13,14 +13,14 @@ class SwitchNode extends Node
      * @param Node        $value
      * @param Node        $cases
      * @param Node|null   $default
-     * @param int         $lineno
+     * @param int $lineno
      * @param string|null $tag
      */
     public function __construct(
         Node $value,
         Node $cases,
         ?Node $default = null,
-        $lineno = 0,
+        int $lineno = 0,
         ?string $tag = null
     )
     {
