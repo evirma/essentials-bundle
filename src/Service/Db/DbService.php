@@ -935,4 +935,13 @@ final class DbService
         return self::$queries;
     }
 
+    public static function isDebug(): bool
+    {
+        return self::$debug;
+    }
+
+    public static function setDebug(bool $debug): void
+    {
+        self::$debug = $debug;
+    }
 }
