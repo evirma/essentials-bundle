@@ -24,9 +24,9 @@ final class DbService
 
     /** @var array<string, DbService> */
     private array $servers = [];
-
     public static array $stat = [];
-
+    private static bool $debug = false;
+    private static array $queries = [];
     private ?Connection $db = null;
 
     public function __construct(private readonly ManagerRegistry $manager, private ?LoggerInterface $logger = null, private readonly string $connectionName = 'default')
@@ -129,10 +129,13 @@ final class DbService
 
     public function rollBack(): void
     {
+        $statIndex = self::statQueryStart('ROLLBACK');
         try {
             self::statInc('rollBack');
             $this->db()->rollBack();
+            self::statQuerySuccess($statIndex);
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e);
         }
     }
@@ -141,22 +144,26 @@ final class DbService
      * Prepares and executes an SQL query and returns the first row of the result
      * as an associative array.
      *
-     * @param string $sql    The SQL query.
-     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     * @param string $sql The SQL query.
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array|false False is returned if no rows are found.
      * @throws SqlDriverException
      */
     public function fetchAssociative(string $sql, array $params = [], array $types = []): array|false
     {
+        $statIndex = self::statQueryStart($sql, $params, $types);
         $sql = $this->executeQuery($sql, $params, $types);
 
         try {
             self::statInc('query');
             self::statInc('query__fetchAssociative');
 
-            return $sql->fetchAssociative();
+            $result = $sql->fetchAssociative();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -166,9 +173,9 @@ final class DbService
      * If the query is parametrized, a prepared statement is used.
      * If an SQLLogger is configured, the execution is logged.
      *
-     * @param string $sql    SQL query
-     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     * @param string $sql SQL query
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return Result
      */
     public function executeQuery(string $sql, array $params = [], array $types = []): Result
@@ -185,14 +192,15 @@ final class DbService
      *
      * @template T
      * @param class-string<T> $object The Object Class
-     * @param string $sql    The SQL query.
-     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     * @param string $sql The SQL query.
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return list<T>
      * @throws SqlDriverException
      */
     public function fetchObjectAll(string $object, string $sql, array $params = [], array $types = []): array
     {
+        $statIndex = self::statQueryStart($sql, $params, $types);
         self::statInc('query');
         self::statInc('query__fetchObjectAll');
 
@@ -203,27 +211,33 @@ final class DbService
             }
         }
 
+        self::statQuerySuccess($statIndex);
         return $result;
     }
 
     /**
      * Prepares and executes an SQL query and returns the result as an array of associative arrays.
      *
-     * @param string $sql    SQL query
-     * @param list<mixed>|array<string, mixed>                                     $params Query parameters
-     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
+     * @param string $sql SQL query
+     * @param list<mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return list<array<string,mixed>>
      * @throws SqlDriverException
      */
     public function fetchAllAssociative(string $sql, array $params = [], array $types = []): array
     {
+        $statIndex = self::statQueryStart($sql, $params, $types);
         self::statInc('query');
         self::statInc('query__fetchAllAssociative');
 
         $sql = $this->executeQuery($sql, $params, $types);
         try {
-            return $sql->fetchAllAssociative();
-        } catch (Exception\DriverException | Exception $e) {
+            $result = $sql->fetchAllAssociative();
+            self::statQuerySuccess($statIndex);
+            return $result;
+        } catch (Exception\DriverException|Exception $e) {
+            self::statQueryError($statIndex);
+
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -251,14 +265,17 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchObject');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         try {
             if ($item = $this->db()->fetchAssociative($sql, $params, $types)) {
                 $item = $this->createObject($object, $item);
             } else {
-                return null;
+                $item = null;
             }
+            self::statQuerySuccess($statIndex);
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
 
@@ -269,7 +286,7 @@ final class DbService
      * Prepares and executes an SQL query and returns the value of a single column
      * of the first row of the result.
      *
-     * @param string $sql    The SQL query to be executed.
+     * @param string $sql The SQL query to be executed.
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return mixed False is returned if no rows are found.
@@ -278,14 +295,19 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchOne');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         if (!$sql = $this->executeQuery($sql, $params, $types)) {
+            self::statQuerySuccess($statIndex);
             return false;
         }
 
         try {
-            return $sql->fetchOne();
+            $result = $sql->fetchOne();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -293,7 +315,7 @@ final class DbService
     /**
      * Prepares and executes an SQL query and returns the result as an array of the first column values.
      *
-     * @param string $sql    SQL query
+     * @param string $sql SQL query
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array<int,mixed>
@@ -303,6 +325,7 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchFirstColumn');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         if (preg_match("#COUNT\s*\(#usi", $sql)) {
             self::statInc('match__count');
@@ -323,8 +346,11 @@ final class DbService
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
-            return $stmt->fetchFirstColumn();
+            $result = $stmt->fetchFirstColumn();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -333,9 +359,9 @@ final class DbService
      * Prepares and executes an SQL query and returns the result as an associative array with the keys
      * mapped to the first column and the values mapped to the second column.
      *
-     * @param string                                           $sql    SQL query
-     * @param array<int, mixed>|array<string, mixed>           $params Query parameters
-     * @param array<int, int|string>|array<string, int|string> $types  Parameter types
+     * @param string $sql SQL query
+     * @param array<int, mixed>|array<string, mixed> $params Query parameters
+     * @param array<int, int|string>|array<string, int|string> $types Parameter types
      * @return array
      * @throws SqlDriverException
      */
@@ -343,12 +369,16 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchAllKeyValue');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
-            return $stmt->fetchAllKeyValue();
+            $result = $stmt->fetchAllKeyValue();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -368,12 +398,16 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchAllAssociativeIndexed');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         $stmt = $this->executeQuery($sql, $params, $types);
 
         try {
-            return $stmt->fetchAllAssociativeIndexed();
+            $result = $stmt->fetchAllAssociativeIndexed();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -382,7 +416,7 @@ final class DbService
      * Prepares and executes an SQL query and returns the result as an iterator over rows represented
      * as associative arrays.
      *
-     * @param string $query  SQL query
+     * @param string $query SQL query
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return Traversable
@@ -392,12 +426,16 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__iterateKeyValue');
+        $statIndex = self::statQueryStart($query, $params, $types);
 
         $stmt = $this->executeQuery($query, $params, $types);
 
         try {
-            return $stmt->iterateKeyValue();
+            $result = $stmt->iterateKeyValue();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $query, $params, $types);
         }
     }
@@ -407,7 +445,7 @@ final class DbService
      * to the first column and the values being an associative array representing the rest of the columns
      * and their values.
      *
-     * @param string $query  SQL query
+     * @param string $query SQL query
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return Traversable
@@ -417,12 +455,16 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__iterateAssociativeIndexed');
+        $statIndex = self::statQueryStart($query, $params, $types);
 
         $stmt = $this->executeQuery($query, $params, $types);
 
         try {
-            return $stmt->iterateAssociativeIndexed();
+            $result = $stmt->iterateAssociativeIndexed();
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $query, $params, $types);
         }
     }
@@ -432,7 +474,7 @@ final class DbService
      * If the query is parametrized, a prepared statement is used.
      * If an SQLLogger is configured, the execution is logged.
      *
-     * @param string $sql    The SQL query to execute.
+     * @param string $sql The SQL query to execute.
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return array The executed statement.
@@ -442,6 +484,7 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchPairs');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         $sql = $this->executeQuery($sql, $params, $types);
         try {
@@ -452,12 +495,15 @@ final class DbService
                     $result[$item[0]] = $item[1];
                 }
 
+                self::statQuerySuccess($statIndex);
                 return $result;
             }
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
 
+        self::statQuerySuccess($statIndex);
         return [];
     }
 
@@ -472,6 +518,7 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__fetchUniqIds');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         $stmt = $this->executeQuery($sql, $params, $types);
 
@@ -483,12 +530,15 @@ final class DbService
                     $result[$item[0]] = $item[0];
                 }
 
+                self::statQuerySuccess($statIndex);
                 return $result;
             }
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
 
+        self::statQuerySuccess($statIndex);
         return [];
     }
 
@@ -502,7 +552,7 @@ final class DbService
      *  - Other statements that don't yield a row set.
      * This method supports PDO binding types as well as DBAL mapping types.
      *
-     * @param string $sql    SQL statement
+     * @param string $sql SQL statement
      * @param list<mixed>|array<string, mixed> $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
@@ -512,10 +562,14 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('query__executeStatement');
+        $statIndex = self::statQueryStart($sql, $params, $types);
 
         try {
-            return (int)$this->db()->executeStatement($sql, $params, $types);
+            $result = (int)$this->db()->executeStatement($sql, $params, $types);
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e, $sql, $params, $types);
         }
     }
@@ -525,7 +579,7 @@ final class DbService
      * Table expression and columns are not escaped and are not safe for user-input.
      *
      * @param string $tableExpression The expression of the table to insert data into, quoted or unquoted.
-     * @param array  $data            An associative array containing column-value pairs.
+     * @param array $data An associative array containing column-value pairs.
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
@@ -534,10 +588,14 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('insert');
+        $statIndex = self::statQueryStart($tableExpression, $data, $types);
 
         try {
-            return (int)$this->db()->insert($tableExpression, $data, $types);
+            $result = (int)$this->db()->insert($tableExpression, $data, $types);
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e);
         }
     }
@@ -546,10 +604,14 @@ final class DbService
     {
         self::statInc('query');
         self::statInc('lastInsertId');
+        $statIndex = self::statQueryStart('lastInsertId');
 
         try {
-            return (string)$this->db()->lastInsertId($seqName);
+            $result = (string)$this->db()->lastInsertId($seqName);
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e);
         }
     }
@@ -559,8 +621,8 @@ final class DbService
      * Table expression and columns are not escaped and are not safe for user-input.
      *
      * @param string $tableExpression The expression of the table to update quoted or unquoted.
-     * @param array  $data            An associative array containing column-value pairs.
-     * @param array  $identifier      The update criteria. An associative array containing column-value pairs.
+     * @param array $data An associative array containing column-value pairs.
+     * @param array $identifier The update criteria. An associative array containing column-value pairs.
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int|string The number of affected rows.
      * @throws SqlDriverException
@@ -570,9 +632,16 @@ final class DbService
         self::statInc('query');
         self::statInc('update');
 
+        /** @noinspection SqlNoDataSourceInspection */
+        /** @noinspection SqlWithoutWhere */
+        $statIndex = self::statQueryStart('DELETE FROM ' . $tableExpression, $data, $identifier);
+
         try {
-            return $this->db()->update($tableExpression, $data, $identifier, $types);
+            $result = $this->db()->update($tableExpression, $data, $identifier, $types);
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e);
         }
     }
@@ -581,8 +650,8 @@ final class DbService
      * Executes an SQL DELETE statement on a table.
      * Table expression and columns are not escaped and are not safe for user-input.
      *
-     * @param string $table    Table name
-     * @param array  $criteria Deletion criteria
+     * @param string $table Table name
+     * @param array $criteria Deletion criteria
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      * @return int The number of affected rows.
      * @throws SqlDriverException
@@ -592,9 +661,16 @@ final class DbService
         self::statInc('query');
         self::statInc('delete');
 
+        /** @noinspection SqlNoDataSourceInspection */
+        /** @noinspection SqlWithoutWhere */
+        $statIndex = self::statQueryStart('DELETE FROM ' . $table, $criteria);
+
         try {
-            return (int)$this->db()->delete($table, $criteria, $types);
+            $result = (int)$this->db()->delete($table, $criteria, $types);
+            self::statQuerySuccess($statIndex);
+            return $result;
         } catch (Exception $e) {
+            self::statQueryError($statIndex);
             throw $this->convertException($e);
         }
     }
@@ -617,6 +693,7 @@ final class DbService
 
         self::statInc('query');
         self::statInc('upsert');
+        $statIndex = self::statQueryStart('upsert', $data);
 
         $includeFields = array_keys($data[0]);
         $includeFieldsStr = implode(', ', $includeFields);
@@ -630,16 +707,19 @@ final class DbService
             /** @noinspection SqlNoDataSourceInspection */
             $sql = "INSERT INTO $table ($includeFieldsStr) VALUES $values ON CONFLICT$conflictStr DO $doStr";
 
-            return $this->executeQuery($sql, $params);
+            $result = $this->executeQuery($sql, $params);
+            self::statQuerySuccess($statIndex);
+            return $result;
         }
 
+        self::statQuerySuccess($statIndex);
         return true;
     }
 
     /**
      * Build Do construction like UPDATE field = EXCLUDED.fields
      *
-     * @param array  $do
+     * @param array $do
      * @param string $doWhere
      * @return string
      */
@@ -700,19 +780,19 @@ final class DbService
                         if ($value == 'NULL') {
                             $sqlValue .= ", NULL";
                         } elseif ($castType === 'int[]') {
-                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => (int)$item, $value)) . ']::integer[]';
+                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn($item) => (int)$item, $value)) . ']::integer[]';
                         } elseif ($castType === 'text[]') {
-                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn ($item) => $conn->quote($item, PDO::PARAM_STR), $value)) . ']::text[]';
+                            $sqlValue .= ', ARRAY [' . implode(',', array_map(static fn($item) => $conn->quote($item, PDO::PARAM_STR), $value)) . ']::text[]';
                         } elseif ($castType != 'mixed') {
-                            $sqlValue .= ",$castTypeStr ".$conn->quote($value, PDO::PARAM_STR);
+                            $sqlValue .= ",$castTypeStr " . $conn->quote($value, PDO::PARAM_STR);
                         } elseif (is_null($value)) {
                             $sqlValue .= ', NULL';
                         } else {
-                            $sqlValue .= ', '.$conn->quote($value, PDO::PARAM_STR);
+                            $sqlValue .= ', ' . $conn->quote($value, PDO::PARAM_STR);
                         }
                     } else {
-                        $sqlValue .= ", :".$key."__".$i;
-                        $params[$key."__".$i] = $value;
+                        $sqlValue .= ", :" . $key . "__" . $i;
+                        $params[$key . "__" . $i] = $value;
                     }
                 }
             }
@@ -804,5 +884,55 @@ final class DbService
         return self::$stat;
     }
 
+    private static function statQueryStart($query, array $params = [], array $types = []): int
+    {
+        if (!self::$debug) {
+            return 0;
+        }
+
+        self::$queries[] = [
+            'query' => $query,
+            'start' => microtime(true),
+            'params' => $params,
+            'types' => $types,
+        ];
+
+        return count(self::$queries) - 1;
+    }
+
+    private static function statQuerySuccess(int $index): void
+    {
+        if (!self::$debug) {
+            return;
+        }
+
+        if (!isset(self::$queries[$index])) {
+            return;
+        }
+
+        self::$queries[$index]['status'] = 'success';
+        self::$queries[$index]['end'] = microtime(true);
+        self::$queries[$index]['rt'] = round(self::$queries[$index]['end'] - self::$queries[$index]['start'], 4);
+    }
+
+    private static function statQueryError(int $index): void
+    {
+        if (!self::$debug) {
+            return;
+        }
+
+        if (!isset(self::$queries[$index])) {
+            return;
+        }
+
+        self::$queries[$index]['status'] = 'error';
+        self::$queries[$index]['end'] = microtime(true);
+        self::$queries[$index]['rt'] = round(self::$queries[$index]['end'] - self::$queries[$index]['start'], 4);
+    }
+
+    public static function getQueries(): array
+    {
+        return self::$queries;
+    }
 
 }
