@@ -62,11 +62,23 @@ final class DbService
 
     public function beginTransaction(): void
     {
+        $connection = $this->db();
+        $level = $connection->getTransactionNestingLevel();
+
         try {
             self::statInc('beginTransaction');
-            $this->db()->beginTransaction();
-        } catch (Exception $e) {
-            $this->convertException($e);
+            $connection->beginTransaction();
+        } catch (Throwable $e) {
+            if ($level === 0) {
+                // DBAL increments the nesting level before issuing BEGIN;
+                // closing the connection resets the counter to zero.
+                try {
+                    $connection->close();
+                } catch (Throwable) {
+                }
+            }
+
+            throw $this->convertException($e);
         }
     }
 
